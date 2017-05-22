@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Configuration;
 
 namespace CDSite.Models
 {
@@ -21,13 +22,20 @@ namespace CDSite.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base(ConnectionStringName(), throwIfV1Schema: false)
         {
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        public static string ConnectionStringName()
+        {
+            var connectionStringName = ConfigurationManager.AppSettings["ConnectionStringName"].ToString();
+            if (string.IsNullOrEmpty(connectionStringName)) return "DefaultConnection";
+            return connectionStringName;
         }
     }
 }
