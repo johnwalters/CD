@@ -263,3 +263,4 @@ __pycache__/
 /CDSite/AppSettingsSecrets.config
 /CDUnitTests/AppSettingsSecrets.config
 /CDUnitTests/ConnectionStrings.config
+/CDSite/Properties/PublishProfiles/LapCd01 - Web Deploy.pubxml
