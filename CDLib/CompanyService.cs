@@ -31,7 +31,7 @@ namespace CDLib
             catch (Exception ex)
             {
                 _logger.Error("Error during CompanyService.Save()",ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -44,7 +44,7 @@ namespace CDLib
             catch (Exception ex)
             {
                 _logger.Error(String.Format( "Error during CompanyService.Delete({0}",id), ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -58,7 +58,7 @@ namespace CDLib
             catch (Exception ex)
             {
                 _logger.Error(String.Format("Error during CompanyService.Get({0})", id), ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -71,7 +71,7 @@ namespace CDLib
             catch (Exception ex)
             {
                 _logger.Error("Error during CompanyService.GetAll", ex);
-                throw ex;
+                throw;
             }
         }
     }
