@@ -19,12 +19,15 @@ namespace CDSite.Controllers
 
             return View();
         }
-
+        //Authorize attribute added from tutorial at https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/create-an-aspnet-mvc-5-web-app-with-email-confirmation-and-password-reset
+        [Authorize]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+     
+       
     }
 }
