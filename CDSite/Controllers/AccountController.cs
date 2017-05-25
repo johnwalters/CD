@@ -9,10 +9,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CDSite.Models;
+using CDLib;
 
 namespace CDSite.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Seller")]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -88,8 +89,20 @@ namespace CDSite.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+
                 case SignInStatus.Success:
+                    //TODO: if user is seller, redirect to offer/index
+                    if(string.IsNullOrEmpty(returnUrl))
+                    {
+                       if(UserManager.IsInRole(user.Id, "Seller"))
+                        {
+                            return RedirectToAction("Index", "Offer");
+                        }
+                    }
+                    
+
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -170,6 +183,17 @@ namespace CDSite.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
+
+                    //Create company with user ID
+                    var companyService = new CompanyService();
+                    var company = new CDLib.Domain.Company();
+                    company.Name = model.CompanyName;
+                    company.UserId = user.Id;
+                    companyService.Save(company);
+
+                    //Add user role of seller
+                    await UserManager.AddToRoleAsync(user.Id, "Seller");
+
 
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
 
