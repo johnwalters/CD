@@ -52,6 +52,7 @@ namespace CDLib.DataLayer
             var parameters = new DynamicParameters();
             parameters.Add("@Id",  dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@Name", company.Name, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@UserId", company.UserId, dbType: DbType.String, direction: ParameterDirection.Input);
 
             SqlConnection.Execute("Company_Add", parameters, commandType: CommandType.StoredProcedure);
             int id = parameters.Get<int>("@Id");
@@ -63,6 +64,8 @@ namespace CDLib.DataLayer
             var parameters = new DynamicParameters();
             parameters.Add("@Id", company.Id, dbType: DbType.Int32, direction: ParameterDirection.Input);
             parameters.Add("@Name", company.Name, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@UserId", company.UserId, dbType: DbType.String, direction: ParameterDirection.Input);
+
 
             SqlConnection.Execute("Company_Update", parameters, commandType: CommandType.StoredProcedure);
 

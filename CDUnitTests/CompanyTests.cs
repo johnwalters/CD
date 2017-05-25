@@ -22,7 +22,9 @@ namespace CDUnitTests
             // create 
             var company = new Company();
             var testName = "fredsCo " + RandomDigits();
+            var testUserId = "userId" + RandomDigits();
             company.Name = testName;
+            company.UserId = testUserId;
 
             var companyService = new CompanyService();
             companyService.Save(company);
@@ -35,15 +37,20 @@ namespace CDUnitTests
 
             // verify property values
             Assert.AreEqual(company2.Name, testName);
+            Assert.AreEqual(company2.UserId, testUserId);
 
             // update it
             var testName2 = "JillsCo " + RandomDigits();
+            var testUserId2 = "userId" + RandomDigits();
             company2.Name = testName2;
+            company2.UserId = testUserId2;
             companyService.Save(company2);
+
 
             // get it again, verify property values
             var company3 = companyService.Get(companyId);
             Assert.AreEqual(company3.Name, testName2);
+            Assert.AreEqual(company3.UserId, testUserId2);
 
             // delete it 
             companyService.Delete(companyId);
