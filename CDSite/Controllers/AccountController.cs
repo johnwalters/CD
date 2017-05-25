@@ -53,7 +53,33 @@ namespace CDSite.Controllers
             }
         }
 
-        //
+        //Details
+        [Authorize]
+        public ActionResult Details()
+        {
+            ViewBag.Message = "Details page.";
+            var model = new DetailsViewModel();
+            var userId = User.Identity.GetUserId();
+            var service = new CompanyService();
+            var company = service.GetByUserId(userId);
+            model.CompanyName = company.Name;
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Details(DetailsViewModel model)
+        {
+            ViewBag.Message = "Details page.";
+           
+            var userId = User.Identity.GetUserId();
+            var service = new CompanyService();
+            var company = service.GetByUserId(userId);
+            company.Name = model.CompanyName;
+            service.Save(company);
+            return View(model);
+        }
+        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)

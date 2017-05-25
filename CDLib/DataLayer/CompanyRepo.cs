@@ -34,6 +34,10 @@ namespace CDLib.DataLayer
             return new Data().GetAllCompanies();
         }
 
+        public Company GetByUserId(string userId)
+        {
+            return new Data().GetCompanyByUserId(userId);
+        }
 
 
 

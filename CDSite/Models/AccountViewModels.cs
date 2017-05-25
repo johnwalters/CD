@@ -112,4 +112,11 @@ namespace CDSite.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    public class DetailsViewModel
+    {
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+        
+    }
 }

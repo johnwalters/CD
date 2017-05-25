@@ -39,6 +39,10 @@ namespace CDUnitTests
             Assert.AreEqual(company2.Name, testName);
             Assert.AreEqual(company2.UserId, testUserId);
 
+            // Verify that I can get by user id
+            var companyUserId = companyService.GetByUserId(testUserId);
+            Assert.IsNotNull(companyUserId);
+
             // update it
             var testName2 = "JillsCo " + RandomDigits();
             var testUserId2 = "userId" + RandomDigits();
@@ -51,6 +55,8 @@ namespace CDUnitTests
             var company3 = companyService.Get(companyId);
             Assert.AreEqual(company3.Name, testName2);
             Assert.AreEqual(company3.UserId, testUserId2);
+
+
 
             // delete it 
             companyService.Delete(companyId);
@@ -66,11 +72,15 @@ namespace CDUnitTests
             // create 
             var company = new Company();
             var testName = "fredsCo " + RandomDigits();
+            var userId = "ABCD" + RandomDigits();
             company.Name = testName;
+            company.UserId = userId;
 
             var company2 = new Company();
             var testName2 = "JillsCo " + RandomDigits();
+            var userId2 = "ABC" + RandomDigits();
             company2.Name = testName2;
+            company2.UserId = userId2;
 
             var companyService = new CompanyService();
             companyService.Save(company);

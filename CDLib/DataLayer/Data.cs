@@ -95,6 +95,14 @@ namespace CDLib.DataLayer
             SqlConnection.Execute("Company_Delete", parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public Company GetCompanyByUserId(string userId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", userId, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            var company = SqlConnection.Query<Company>("Company_GetByUserId", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            return company;
+        }
         #endregion
 
     }

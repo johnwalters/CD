@@ -64,6 +64,19 @@ namespace CDLib
             }
         }
 
+        public Company GetByUserId(string userId)
+        {
+            try
+            {
+                return _repo.GetByUserId(userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(String.Format("Error during CompanyService.GetByUserId({0})", userId), ex);
+                throw;
+            }
+        }
+
         public List<Company> GetAll()
         {
             try
