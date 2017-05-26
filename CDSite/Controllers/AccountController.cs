@@ -75,7 +75,21 @@ namespace CDSite.Controllers
             var userId = User.Identity.GetUserId();
             var service = new CompanyService();
             var company = service.GetByUserId(userId);
+            var address1 = company.Address1;
+            var address2 = company.Address2;
+            var city = company.City;
+            var state = company.State;
+            var postalCode = company.PostalCode;
+            var phoneNumber = company.PhoneNumber;
+
             company.Name = model.CompanyName;
+            company.Address1 = model.Address1;
+            company.Address2 = model.Address2;
+            company.City = model.City;
+            company.State = model.State;
+            company.PostalCode = model.PostalCode;
+            company.PhoneNumber = model.PhoneNumber;
+            
             service.Save(company);
             return View(model);
         }

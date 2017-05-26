@@ -53,6 +53,12 @@ namespace CDLib.DataLayer
             parameters.Add("@Id",  dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@Name", company.Name, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@UserId", company.UserId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Address1", company.Address1, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Address2", company.Address2, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@City", company.City, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@State", company.State, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@PostalCode", company.PostalCode, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@PhoneNumber", company.PhoneNumber, dbType: DbType.String, direction: ParameterDirection.Input);
 
             SqlConnection.Execute("Company_Add", parameters, commandType: CommandType.StoredProcedure);
             int id = parameters.Get<int>("@Id");
@@ -65,6 +71,14 @@ namespace CDLib.DataLayer
             parameters.Add("@Id", company.Id, dbType: DbType.Int32, direction: ParameterDirection.Input);
             parameters.Add("@Name", company.Name, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@UserId", company.UserId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Address1", company.Address1, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Address2", company.Address2, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@City", company.City, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@State", company.State, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@PostalCode", company.PostalCode, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@PhoneNumber", company.PhoneNumber, dbType: DbType.String, direction: ParameterDirection.Input);
+
+
 
 
             SqlConnection.Execute("Company_Update", parameters, commandType: CommandType.StoredProcedure);

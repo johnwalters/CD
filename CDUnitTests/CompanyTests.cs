@@ -23,8 +23,21 @@ namespace CDUnitTests
             var company = new Company();
             var testName = "fredsCo " + RandomDigits();
             var testUserId = "userId" + RandomDigits();
+            var testAddress1 = RandomDigits() + " Main St.";
+            var testAddress2 = RandomDigits() + " Alternate Dr.";
+            var testCity = "San Francisco";
+            var testState = "CA";
+            var testPostalCode = RandomDigits();
+            var testPhoneNumber = "555" + RandomDigits();
+
             company.Name = testName;
             company.UserId = testUserId;
+            company.Address1 = testAddress1;
+            company.Address2 = testAddress2;
+            company.City = testCity;
+            company.State = testState;
+            company.PostalCode = testPostalCode;
+            company.PhoneNumber = testPhoneNumber;
 
             var companyService = new CompanyService();
             companyService.Save(company);
@@ -38,6 +51,12 @@ namespace CDUnitTests
             // verify property values
             Assert.AreEqual(company2.Name, testName);
             Assert.AreEqual(company2.UserId, testUserId);
+            Assert.AreEqual(company2.Address1, testAddress1);
+            Assert.AreEqual(company2.Address2, testAddress2);
+            Assert.AreEqual(company2.City, testCity);
+            Assert.AreEqual(company2.State, testState);
+            Assert.AreEqual(company2.PostalCode, testPostalCode);
+            Assert.AreEqual(company2.PhoneNumber, testPhoneNumber);
 
             // Verify that I can get by user id
             var companyUserId = companyService.GetByUserId(testUserId);
@@ -73,12 +92,19 @@ namespace CDUnitTests
             var company = new Company();
             var testName = "fredsCo " + RandomDigits();
             var userId = "ABCD" + RandomDigits();
+            var testAddress1 = RandomDigits() + " Glasgow St.";
+            var testAddress2 = RandomDigits() + " Behemoth Dr.";
+            var testCity = "Denver";
+            var testState = "CO";
+            var testPostalCode = RandomDigits();
+            var testPhoneNumber = "555" + RandomDigits();
             company.Name = testName;
             company.UserId = userId;
 
             var company2 = new Company();
             var testName2 = "JillsCo " + RandomDigits();
             var userId2 = "ABC" + RandomDigits();
+            //Leaving the rest of values empty purposefully
             company2.Name = testName2;
             company2.UserId = userId2;
 
