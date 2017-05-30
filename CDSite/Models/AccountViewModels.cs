@@ -129,7 +129,7 @@ namespace CDSite.Models
         public string PostalCode { get; set; }
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
-
+        
         public string SuccessMessage { get; set; }
 
     }

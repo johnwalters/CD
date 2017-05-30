@@ -63,6 +63,12 @@ namespace CDSite.Controllers
             var service = new CompanyService();
             var company = service.GetByUserId(userId);
             model.CompanyName = company.Name;
+            model.Address1 = company.Address1;
+            model.Address2 = company.Address2;
+            model.City = company.City;
+            model.State = company.State;
+            model.PostalCode = company.PostalCode;
+            model.PhoneNumber = company.PhoneNumber;
             return View(model);
         }
 
@@ -75,14 +81,7 @@ namespace CDSite.Controllers
             var userId = User.Identity.GetUserId();
             var service = new CompanyService();
             var company = service.GetByUserId(userId);
-            var address1 = company.Address1;
-            var address2 = company.Address2;
-            var city = company.City;
-            var state = company.State;
-            var postalCode = company.PostalCode;
-            var phoneNumber = company.PhoneNumber;
-            //var successMessage = model.SuccessMessage;
-
+         
             company.Name = model.CompanyName;
             company.Address1 = model.Address1;
             company.Address2 = model.Address2;
@@ -90,10 +89,10 @@ namespace CDSite.Controllers
             company.State = model.State;
             company.PostalCode = model.PostalCode;
             company.PhoneNumber = model.PhoneNumber;
-            //successMessage = "";
+            
             
             service.Save(company);
-            TempData["UserMessage"] = new { CssClassName = "alert-sucess", Title = "Success!", Message = "Profile saved." };
+            model.SuccessMessage = "Success - Profile saved.";
             return View(model);
         }
         
