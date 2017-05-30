@@ -65,6 +65,14 @@ namespace CDLib.DataLayer
             return id;
         }
 
+        public void DeleteCompany(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("Company_Delete", parameters, commandType: CommandType.StoredProcedure);
+        }
+
         public void UpdateCompany(Company company)
         {
             var parameters = new DynamicParameters();
@@ -77,10 +85,7 @@ namespace CDLib.DataLayer
             parameters.Add("@State", company.State, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@PostalCode", company.PostalCode, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@PhoneNumber", company.PhoneNumber, dbType: DbType.String, direction: ParameterDirection.Input);
-
-
-
-
+            
             SqlConnection.Execute("Company_Update", parameters, commandType: CommandType.StoredProcedure);
 
         }
@@ -101,13 +106,7 @@ namespace CDLib.DataLayer
             return companies;
         }
 
-        public void DeleteCompany(int id)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
-
-            SqlConnection.Execute("Company_Delete", parameters, commandType: CommandType.StoredProcedure);
-        }
+       
 
         public Company GetCompanyByUserId(string userId)
         {
@@ -116,6 +115,58 @@ namespace CDLib.DataLayer
 
             var company = SqlConnection.Query<Company>("Company_GetByUserId", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
             return company;
+        }
+        #endregion
+
+        #region Offer Methods
+        public int CreateOffer(Offer offer)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@Title", offer.Title, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@CompanyId", offer.CompanyId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Description", offer.Description, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Url", offer.Url, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("Offer_Add", parameters, commandType: CommandType.StoredProcedure);
+            int id = parameters.Get<int>("@Id");
+            return id;
+        }
+
+        public void UpdateOffer(Offer offer)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", offer.Id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+            parameters.Add("@Title", offer.Title, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Description", offer.Description, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Url", offer.Url, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("Offer_Update", parameters, commandType: CommandType.StoredProcedure);
+
+        }
+
+        public void DeleteOffer(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("Offer_Delete", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public Offer GetOffer(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+
+            var offer = SqlConnection.Query<Offer>("Offer_Get", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            return offer;
+        }
+
+        public List<Offer> GetAllOffers(int companyId)
+        {
+            var parameters = new DynamicParameters();
+            var offers = SqlConnection.Query<Offer>("Offer_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
+            return offers;
         }
         #endregion
 

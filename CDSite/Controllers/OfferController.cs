@@ -14,5 +14,11 @@ namespace CDSite.Controllers
         {
             return View();
         }
+        //[HttpPost]
+        //[Authorize]
+        //public ActionResult Index(IndexViewModel model)
+        //{
+        //    ViewBag.Message = "Offers page.";
+        //}
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 namespace CDUnitTests
 {
     [TestClass]
-    public class CompanyTests
+    public partial class CompanyTests
     {
         private Random _random;
 
@@ -129,6 +129,11 @@ namespace CDUnitTests
         private string RandomDigits()
         {
             return _random.Next(10000, 99999).ToString();
+        }
+
+        private int RandomInteger()
+        {
+            return _random.Next(10000, 99999);
         }
     }
 }
