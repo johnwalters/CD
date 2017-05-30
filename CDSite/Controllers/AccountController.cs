@@ -81,6 +81,7 @@ namespace CDSite.Controllers
             var state = company.State;
             var postalCode = company.PostalCode;
             var phoneNumber = company.PhoneNumber;
+            //var successMessage = model.SuccessMessage;
 
             company.Name = model.CompanyName;
             company.Address1 = model.Address1;
@@ -89,8 +90,10 @@ namespace CDSite.Controllers
             company.State = model.State;
             company.PostalCode = model.PostalCode;
             company.PhoneNumber = model.PhoneNumber;
+            //successMessage = "";
             
             service.Save(company);
+            TempData["UserMessage"] = new { CssClassName = "alert-sucess", Title = "Success!", Message = "Profile saved." };
             return View(model);
         }
         

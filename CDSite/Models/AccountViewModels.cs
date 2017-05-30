@@ -130,5 +130,7 @@ namespace CDSite.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
+        public string SuccessMessage { get; set; }
+
     }
 }
