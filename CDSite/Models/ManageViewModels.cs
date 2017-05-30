@@ -9,9 +9,31 @@ namespace CDSite.Models
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
-        public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+
+        [Display(Name = "Address 1")]
+        public string Address1 { get; set; }
+
+        [Display(Name = "Address 2")]
+        public string Address2 { get; set; }
+
+        [Display(Name = "City")]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+        [Display(Name = "Postal Code")]
+        public string PostalCode { get; set; }
+
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        public string SuccessMessage { get; set; }
     }
 
     public class ManageLoginsViewModel

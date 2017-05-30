@@ -93,7 +93,7 @@ namespace CDSite.Controllers
             
             service.Save(company);
             model.SuccessMessage = "Success - Profile saved.";
-            return View(model);
+            return RedirectToAction("Index", "Manage");
         }
         
         // GET: /Account/Login

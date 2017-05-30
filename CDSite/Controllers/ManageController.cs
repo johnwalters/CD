@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CDSite.Models;
+using CDLib;
 
 namespace CDSite.Controllers
 {
@@ -71,7 +72,42 @@ namespace CDSite.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+
             };
+            ViewBag.Message = "Details page.";
+            var service = new CompanyService();
+            var company = service.GetByUserId(userId);
+            model.CompanyName = company.Name;
+            model.Address1 = company.Address1;
+            model.Address2 = company.Address2;
+            model.City = company.City;
+            model.State = company.State;
+            model.PostalCode = company.PostalCode;
+            model.PhoneNumber = company.PhoneNumber;
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Index(IndexViewModel model)
+        {
+            ViewBag.Message = "Details page.";
+
+            var userId = User.Identity.GetUserId();
+            var service = new CompanyService();
+            var company = service.GetByUserId(userId);
+           
+            company.Name = model.CompanyName;
+            company.Address1 = model.Address1;
+            company.Address2 = model.Address2;
+            company.City = model.City;
+            company.State = model.State;
+            company.PostalCode = model.PostalCode;
+            company.PhoneNumber = model.PhoneNumber;
+
+
+            service.Save(company);
+            model.SuccessMessage = "Success - Profile saved.";
             return View(model);
         }
 
