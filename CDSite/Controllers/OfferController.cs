@@ -18,7 +18,26 @@ namespace CDSite.Controllers
         // GET: Offer
         public ActionResult Index()
         {
-            return View();
+            OfferListViewModel model = new OfferListViewModel();
+            model.OfferList = new List<OfferViewModel>();
+            //Pull data from database and display in table.
+            CompanyService companyService = new CompanyService();
+            OfferService offerService = new OfferService();
+            var userId = User.Identity.GetUserId();
+
+            var company = companyService.GetByUserId(userId);
+            var offerList = offerService.GetAll(company.Id);
+            foreach (var item in offerList)
+            {
+                OfferViewModel offerViewModel = new OfferViewModel();
+                offerViewModel.Title = item.Title;
+                offerViewModel.Description = item.Description;
+                offerViewModel.Url = item.Url;
+                model.OfferList.Add(offerViewModel);
+                offerViewModel.Id = item.Id;
+            }
+            
+            return View(model);
         }
         //[HttpPost]
         //[Authorize]
@@ -64,7 +83,10 @@ namespace CDSite.Controllers
         [Authorize]
         public ActionResult Edit(OfferViewModel model)
         {
-            // ViewBag.Message = "Edit page.";
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             var userId = User.Identity.GetUserId();
             var service = new CompanyService();
@@ -76,11 +98,31 @@ namespace CDSite.Controllers
             offer.Description = model.Description;
             offer.Url = model.Url;
             offer.CompanyId = company.Id;
+            offer.Id = model.Id;
 
             offerService.Save(offer);
             
             model.SuccessMessage = "Success - Offer saved.";
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            // ViewBag.Message = "Edit page.";
+
+            var userId = User.Identity.GetUserId();
+            var service = new CompanyService();
+            var company = service.GetByUserId(userId);
+            var offerService = new OfferService();
+
+            var offer = offerService.Get(id);
+            var model = new OfferViewModel();
+            model.Title = offer.Title;
+            model.Description = offer.Description;
+            model.Url = offer.Url;
+
+            return View(model);
         }
     }
 }

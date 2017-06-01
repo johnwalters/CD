@@ -1,4 +1,7 @@
-﻿
+﻿@model CDSite.Models.OfferListViewModel
+@{
+    ViewBag.Title = "Offers";
+}
 
 
 <!DOCTYPE html>
@@ -17,6 +20,22 @@
     <div> 
         <p>Your offers:</p>
     </div>
+
+    <table class="table">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>URL</th>
+        </tr>
+        @foreach (var offer in Model.OfferList)
+        {
+            <tr>
+                <th>@Html.ActionLink(offer.Title, "Edit", new { id = offer.Id })</th>
+                <td>@offer.Description</td>
+                <td>@offer.Url</td>
+            </tr>
+        }
+    </table>
    
 </body>
 </html>
