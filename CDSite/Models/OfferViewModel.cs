@@ -9,12 +9,16 @@ namespace CDSite.Models
     public class OfferViewModel
     {
         [Display(Name = "Title")]
-        public string OfferTitle { get; set; }
+        public string Title { get; set; }
 
         [Display(Name = "Description")]
-        public string OfferDescription { get; set; }
+        public string Description { get; set; }
 
         [Display(Name = "URL")]
-        public string OfferUrl { get; set; }
+        public string Url { get; set; }
+
+        public string SuccessMessage { get; set; }
     }
+
+   
 }
