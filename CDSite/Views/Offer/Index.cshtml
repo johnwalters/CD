@@ -1,7 +1,5 @@
 ﻿
-@{
-    Layout = null;
-}
+
 
 <!DOCTYPE html>
 
@@ -11,8 +9,14 @@
     <title>Offers</title>
 </head>
 <body>
-    <div> 
-        <p>Still working on the layout of this page</p>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Create", "Create", "Offer", null, new {@class = "btn btn-success" })
+        </div>
     </div>
+    <div> 
+        <p>Your offers:</p>
+    </div>
+   
 </body>
 </html>

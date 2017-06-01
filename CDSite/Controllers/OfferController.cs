@@ -20,5 +20,9 @@ namespace CDSite.Controllers
         //{
         //    ViewBag.Message = "Offers page.";
         //}
+        public ActionResult Create()
+        {
+            return View();
+        }
     }
 }
