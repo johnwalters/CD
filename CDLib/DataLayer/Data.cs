@@ -165,6 +165,8 @@ namespace CDLib.DataLayer
         public List<Offer> GetAllOffers(int companyId)
         {
             var parameters = new DynamicParameters();
+            parameters.Add("@CompanyId", companyId, dbType: DbType.String, direction: ParameterDirection.Input);
+
             var offers = SqlConnection.Query<Offer>("Offer_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
             return offers;
         }

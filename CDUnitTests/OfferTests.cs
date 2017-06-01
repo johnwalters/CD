@@ -2,6 +2,7 @@
 using CDLib.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace CDUnitTests
 {
@@ -88,6 +89,99 @@ namespace CDUnitTests
                 return _random.Next(10000, 99999);
             }
 
+            [TestMethod]
+            public void GetAllOffersTest()
+            {
+                CompanyService companyService = new CompanyService();
+                OfferService offerService = new OfferService();
+                
+                //Get all companies
+                List<Company> testCompanyList = new List<Company>();
+                testCompanyList = companyService.GetAll();
+
+                foreach (var item in testCompanyList)
+                {
+                    companyService.Delete(item.Id);
+                }
+
+                //Create companies and verify offer count
+                Company testCompany1 = new Company();
+                testCompany1.Name = "No. One inc.";
+                testCompany1.UserId = "co1" + RandomDigits();
+
+                Company testCompany2 = new Company();
+                testCompany2.Name = "No. Two inc.";
+                testCompany2.UserId = "co2" + RandomDigits();
+
+                companyService.Save(testCompany1);//Id = 41
+                companyService.Save(testCompany2);//Id = 42
+
+                Offer testOffer11 = new Offer();
+                testOffer11.Title = "Banana peelers 5% off!";
+                testOffer11.Description = "Peel yer' nanners!";
+                testOffer11.Url = "fakebananapeeler.bamazon.com/";
+                testOffer11.CompanyId = testCompany1.Id;
+
+                //Saving offers of first company(First digit = company number, second digit = offer number)
+                offerService.Save(testOffer11);
+                
+                //Creating offers for second company
+                Offer testOffer21 = new Offer();
+                testOffer21.Title = "Fishing Rods 10% off!";
+                testOffer21.Description = "Get yer' fishin' rods here!";
+                testOffer21.Url = "fakefishingrod.bamazon.com/";
+                testOffer21.CompanyId = testCompany2.Id;
+
+                Offer testOffer22 = new Offer();
+                testOffer22.Title = "Fishing bait 20% off!";
+                testOffer22.Description = "We got worms here real cheap!";
+                testOffer22.Url = "fakefishingbait.bamazon.com/";
+                testOffer22.CompanyId = testCompany2.Id;
+
+                //Saving offers of second company(First digit = company number, second digit = offer number)
+                offerService.Save(testOffer21);
+                offerService.Save(testOffer22);
+
+                List<Offer> offerList1 = new List<Offer>();
+                offerList1 = offerService.GetAll(testCompany1.Id);//41 because id of company1 == 41
+                Assert.IsTrue(offerList1.Count == 1);
+                
+                List<Offer> offerList2 = new List<Offer>();
+                offerList2 = offerService.GetAll(testCompany2.Id);
+                Assert.IsTrue(offerList2.Count == 2);
+
+                companyService.Delete(testCompany1.Id);
+                companyService.Delete(testCompany1.Id);
+
+
+                offerService.Delete(testOffer11.Id);
+                offerService.Delete(testOffer21.Id);
+                offerService.Delete(testOffer22.Id);
+
+                var companyList = companyService.GetAll();
+                foreach (var item in companyList)
+                {
+                    var offerList = offerService.GetAll(item.Id);
+                    foreach (var item2 in offerList1)
+                    {
+                        offerService.Delete(item2.Id);
+                    }
+                    companyService.Delete(item.Id);
+                }
+
+
+
+
+
+
+
+            }
+
         }
+        
+        
+      
+
+
     }
 }
