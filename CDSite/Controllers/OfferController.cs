@@ -13,8 +13,9 @@ using static CDSite.Controllers.ManageController;
 namespace CDSite.Controllers
 {
     [Authorize]
-    public class OfferController : Controller
+    public class OfferController : BaseController
     {
+        
         // GET: Offer
         public ActionResult Index()
         {
@@ -33,12 +34,14 @@ namespace CDSite.Controllers
                 offerViewModel.Title = item.Title;
                 offerViewModel.Description = item.Description;
                 offerViewModel.Url = item.Url;
+                offerViewModel.Category = item.Category;
                 model.OfferList.Add(offerViewModel);
                 offerViewModel.Id = item.Id;
             }
             
             return View(model);
         }
+        
         //[HttpPost]
         //[Authorize]
         //public ActionResult Index(IndexViewModel model)
@@ -47,13 +50,12 @@ namespace CDSite.Controllers
         //}
         public ActionResult Create(ManageMessageId? message)
         {
-            var userId = User.Identity.GetUserId();
+            var company = UserCompany;
 
             var model = new OfferViewModel { };
-
-            var service = new OfferService();
+            
             var companyService = new CompanyService();
-            var company = companyService.GetByUserId(userId);
+            
 
             return View(model);
         }
@@ -64,10 +66,9 @@ namespace CDSite.Controllers
         {
             ViewBag.Message = "Create page.";
 
-            var userId = User.Identity.GetUserId();
-            var service = new OfferService();
+            var company = UserCompany;
             var companyService = new CompanyService();
-            var company = companyService.GetByUserId(userId);
+           
 
 
             //offer.Title = model.Title;
@@ -88,15 +89,14 @@ namespace CDSite.Controllers
                 return View(model);
             }
 
-            var userId = User.Identity.GetUserId();
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
+            var company = UserCompany;
             var offer = new Offer();
             var offerService = new OfferService();
 
             offer.Title = model.Title;
             offer.Description = model.Description;
             offer.Url = model.Url;
+            offer.Category = model.Category;
             offer.CompanyId = company.Id;
             offer.Id = model.Id;
 
@@ -111,9 +111,7 @@ namespace CDSite.Controllers
         {
             // ViewBag.Message = "Edit page.";
 
-            var userId = User.Identity.GetUserId();
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
+            var company = UserCompany;
             var offerService = new OfferService();
 
             var offer = offerService.Get(id);
@@ -129,6 +127,7 @@ namespace CDSite.Controllers
                 model.Title = offer.Title;
                 model.Description = offer.Description;
                 model.Url = offer.Url;
+                model.Category = offer.Category;
             }
 
             return View(model);

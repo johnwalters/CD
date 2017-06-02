@@ -31,6 +31,7 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>URL</th>
+                <th>Category</th>
             </tr>
 
 
@@ -40,6 +41,7 @@
                     <th>@Html.ActionLink(offer.Title, "Edit", new { id = offer.Id })</th>
                     <td>@offer.Description</td>
                     <td>@offer.Url</td>
+                    <td>@offer.Category</td>
                 </tr>
             }
 

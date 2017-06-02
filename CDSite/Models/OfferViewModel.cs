@@ -21,6 +21,9 @@ namespace CDSite.Models
         [Display(Name = "URL")]
         public string Url { get; set; }
 
+        [Display(Name = "Category")]
+        public string Category { get; set; }
+
         public string SuccessMessage { get; set; }
 
         public string ErrorMessage { get; set; }

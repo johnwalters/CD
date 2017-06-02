@@ -127,6 +127,7 @@ namespace CDLib.DataLayer
             parameters.Add("@CompanyId", offer.CompanyId, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@Description", offer.Description, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@Url", offer.Url, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Category", offer.Category, dbType: DbType.String, direction: ParameterDirection.Input);
 
             SqlConnection.Execute("Offer_Add", parameters, commandType: CommandType.StoredProcedure);
             int id = parameters.Get<int>("@Id");
@@ -140,6 +141,7 @@ namespace CDLib.DataLayer
             parameters.Add("@Title", offer.Title, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@Description", offer.Description, dbType: DbType.String, direction: ParameterDirection.Input);
             parameters.Add("@Url", offer.Url, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Category", offer.Category, dbType: DbType.String, direction: ParameterDirection.Input);
 
             SqlConnection.Execute("Offer_Update", parameters, commandType: CommandType.StoredProcedure);
 

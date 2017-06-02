@@ -17,5 +17,8 @@ namespace CDSite.Models
 
         [Display(Name = "URL")]
         public string URL { get; set; }
+
+        [Display(Name = "Category")]
+        public string Category { get; set; }
     }
 }

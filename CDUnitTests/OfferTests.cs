@@ -27,13 +27,16 @@ namespace CDUnitTests
                 var testTitle = "Knife Sale";
                 var testDescription = "40% off these real sharp knives!";
                 var testUrl = "fakeurl.amazon.com/";
+                var testCategory = "Kitchen Supplies";
                 var testCompanyId = RandomInteger();
+                
 
 
 
                 Offer.Title = testTitle;
                 Offer.Description = testDescription;
                 Offer.Url = testUrl;
+                Offer.Category = testCategory;
                 Offer.CompanyId = testCompanyId;
 
 
@@ -50,6 +53,7 @@ namespace CDUnitTests
                 Assert.AreEqual(Offer2.Title, testTitle);
                 Assert.AreEqual(Offer2.Description, testDescription);
                 Assert.AreEqual(Offer2.Url, testUrl);
+                Assert.AreEqual(Offer2.Category, testCategory);
                 Assert.AreEqual(Offer2.CompanyId, testCompanyId);
 
                 
@@ -61,8 +65,10 @@ namespace CDUnitTests
                 // update it
                 var testTitle2 = "Jills Offer " + RandomDigits();
                 var testDescription2 = "Since no one's buying, 95% off these real sharp knives!";
+                var testCategory2 = "Weapons";
                 Offer2.Title = testTitle2;
                 Offer2.Description = testDescription2;
+                Offer2.Category = testCategory2;
                 OfferService.Save(Offer2);
 
 
@@ -70,7 +76,7 @@ namespace CDUnitTests
                 var Offer3 = OfferService.Get(OfferId);
                 Assert.AreEqual(testTitle2, Offer3.Title);
                 Assert.AreEqual(testDescription2, Offer3.Description);
-
+                Assert.AreEqual(testCategory2, Offer3.Category);
 
 
                 // delete it 
@@ -94,7 +100,7 @@ namespace CDUnitTests
             {
                 CompanyService companyService = new CompanyService();
                 OfferService offerService = new OfferService();
-                
+
                 //Get all companies
                 List<Company> testCompanyList = new List<Company>();
                 testCompanyList = companyService.GetAll();
@@ -120,22 +126,25 @@ namespace CDUnitTests
                 testOffer11.Title = "Banana peelers 5% off!";
                 testOffer11.Description = "Peel yer' nanners!";
                 testOffer11.Url = "fakebananapeeler.bamazon.com/";
+                testOffer11.Category = "Kitchen Supplies";
                 testOffer11.CompanyId = testCompany1.Id;
 
                 //Saving offers of first company(First digit = company number, second digit = offer number)
                 offerService.Save(testOffer11);
-                
+
                 //Creating offers for second company
                 Offer testOffer21 = new Offer();
                 testOffer21.Title = "Fishing Rods 10% off!";
                 testOffer21.Description = "Get yer' fishin' rods here!";
                 testOffer21.Url = "fakefishingrod.bamazon.com/";
+                testOffer21.Category = "Fishing";
                 testOffer21.CompanyId = testCompany2.Id;
 
                 Offer testOffer22 = new Offer();
                 testOffer22.Title = "Fishing bait 20% off!";
                 testOffer22.Description = "We got worms here real cheap!";
                 testOffer22.Url = "fakefishingbait.bamazon.com/";
+                testOffer22.Category = "Fishing";
                 testOffer22.CompanyId = testCompany2.Id;
 
                 //Saving offers of second company(First digit = company number, second digit = offer number)

@@ -12,7 +12,7 @@ using CDLib;
 namespace CDSite.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -65,6 +65,7 @@ namespace CDSite.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var company = this.UserCompany;
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -75,8 +76,7 @@ namespace CDSite.Controllers
 
             };
             ViewBag.Message = "Details page.";
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
+           
             model.CompanyName = company.Name;
             model.Address1 = company.Address1;
             model.Address2 = company.Address2;
@@ -93,10 +93,8 @@ namespace CDSite.Controllers
         {
             ViewBag.Message = "Details page.";
 
-            var userId = User.Identity.GetUserId();
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
-           
+            var company = this.UserCompany;
+
             company.Name = model.CompanyName;
             company.Address1 = model.Address1;
             company.Address2 = model.Address2;
@@ -105,7 +103,7 @@ namespace CDSite.Controllers
             company.PostalCode = model.PostalCode;
             company.PhoneNumber = model.PhoneNumber;
 
-
+            CompanyService service = new CompanyService();
             service.Save(company);
             model.SuccessMessage = "Success - Profile saved.";
             return View(model);

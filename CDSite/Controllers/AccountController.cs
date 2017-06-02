@@ -10,12 +10,14 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CDSite.Models;
 using CDLib;
+using CDLib.Domain;
 
 namespace CDSite.Controllers
 {
     [Authorize(Roles = "Seller")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
+        
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -28,6 +30,8 @@ namespace CDSite.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
+       
 
         public ApplicationSignInManager SignInManager
         {
@@ -59,9 +63,7 @@ namespace CDSite.Controllers
         {
             ViewBag.Message = "Details page.";
             var model = new DetailsViewModel();
-            var userId = User.Identity.GetUserId();
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
+            var company = this.UserCompany;
             model.CompanyName = company.Name;
             model.Address1 = company.Address1;
             model.Address2 = company.Address2;
@@ -77,11 +79,9 @@ namespace CDSite.Controllers
         public ActionResult Details(DetailsViewModel model)
         {
             ViewBag.Message = "Details page.";
-           
-            var userId = User.Identity.GetUserId();
-            var service = new CompanyService();
-            var company = service.GetByUserId(userId);
-         
+
+            var company = this.UserCompany;
+
             company.Name = model.CompanyName;
             company.Address1 = model.Address1;
             company.Address2 = model.Address2;
@@ -89,8 +89,8 @@ namespace CDSite.Controllers
             company.State = model.State;
             company.PostalCode = model.PostalCode;
             company.PhoneNumber = model.PhoneNumber;
-            
-            
+
+            var service = new CompanyService();
             service.Save(company);
             model.SuccessMessage = "Success - Profile saved.";
             return RedirectToAction("Index", "Manage");
