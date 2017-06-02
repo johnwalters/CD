@@ -17,25 +17,34 @@
             @Html.ActionLink("Create", "Create", "Offer", null, new {@class = "btn btn-success" })
         </div>
     </div>
-    <div> 
-        <p>Your offers:</p>
-    </div>
-
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>URL</th>
-        </tr>
-        @foreach (var offer in Model.OfferList)
+        @if(@Model.OfferList.Count == 0)
         {
-            <tr>
-                <th>@Html.ActionLink(offer.Title, "Edit", new { id = offer.Id })</th>
-                <td>@offer.Description</td>
-                <td>@offer.Url</td>
-            </tr>
+        <h3>No offers to display yet.</h3>
         }
-    </table>
+        else
+        {
+        <div>
+            <h3>Your offers:</h3>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>URL</th>
+            </tr>
+
+
+            @foreach (var offer in Model.OfferList)
+            {
+                <tr>
+                    <th>@Html.ActionLink(offer.Title, "Edit", new { id = offer.Id })</th>
+                    <td>@offer.Description</td>
+                    <td>@offer.Url</td>
+                </tr>
+            }
+
+        </table>
+        }
    
 </body>
 </html>
