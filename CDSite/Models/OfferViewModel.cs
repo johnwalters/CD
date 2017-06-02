@@ -22,6 +22,8 @@ namespace CDSite.Models
         public string Url { get; set; }
 
         public string SuccessMessage { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 
    

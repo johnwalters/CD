@@ -117,10 +117,19 @@ namespace CDSite.Controllers
             var offerService = new OfferService();
 
             var offer = offerService.Get(id);
+            
             var model = new OfferViewModel();
-            model.Title = offer.Title;
-            model.Description = offer.Description;
-            model.Url = offer.Url;
+            if (offer == null)
+            {
+                //offer ain't there.
+                model.ErrorMessage = "Offer not found.";
+            }
+            else
+            {
+                model.Title = offer.Title;
+                model.Description = offer.Description;
+                model.Url = offer.Url;
+            }
 
             return View(model);
         }

@@ -13,7 +13,12 @@
 <body>
     @using (Html.BeginForm("Edit", "Offer", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
-
+        if (!String.IsNullOrEmpty(@Model.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert"><strong>@Model.ErrorMessage</strong></div>    
+        }
+        else
+        {
         <div>
             <div><h1>Edit Offer: </h1></div>
             <div class="form-group">
@@ -53,6 +58,8 @@
             </div>
 
         </div>
+            }
+        
     }
 </body>
 </html>
