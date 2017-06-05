@@ -116,11 +116,16 @@ namespace CDSite.Controllers
             var offer = offerService.Get(id);
             
             var model = new OfferViewModel();
+            if(offer != null && offer.CompanyId != UserCompany.Id)
+            {
+                offer = null;
+            }
             if (offer == null)
             {
                 //offer ain't there.
                 model.ErrorMessage = "Offer not found.";
             }
+            
             else
             {
                 model.Title = offer.Title;
