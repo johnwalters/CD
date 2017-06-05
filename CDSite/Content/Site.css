@@ -22,3 +22,8 @@ select,
 textarea {
     max-width: 280px;
 }
+.navbar {
+    background-color: #002023 !important;
+    color: #000000;
+}
+
