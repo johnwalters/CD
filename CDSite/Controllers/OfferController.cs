@@ -24,9 +24,8 @@ namespace CDSite.Controllers
             //Pull data from database and display in table.
             CompanyService companyService = new CompanyService();
             OfferService offerService = new OfferService();
-            var userId = User.Identity.GetUserId();
 
-            var company = companyService.GetByUserId(userId);
+            var company = base.UserCompany;
             var offerList = offerService.GetAll(company.Id);
             foreach (var item in offerList)
             {
