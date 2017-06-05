@@ -136,5 +136,13 @@ namespace CDSite.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Delete(OfferViewModel model)
+        {
+            OfferService service = new OfferService();
+            service.Delete(model.Id);
+            return RedirectToAction("Index");
+        }
     }
 }
