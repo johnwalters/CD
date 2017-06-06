@@ -96,7 +96,7 @@ namespace CDUnitTests
             }
 
             [TestMethod]
-            public void GetAllOffersTest()
+            public void GetAllOffers()
             {
                 CompanyService companyService = new CompanyService();
                 OfferService offerService = new OfferService();
@@ -158,14 +158,7 @@ namespace CDUnitTests
                 List<Offer> offerList2 = new List<Offer>();
                 offerList2 = offerService.GetAll(testCompany2.Id);
                 Assert.IsTrue(offerList2.Count == 2);
-
-                companyService.Delete(testCompany1.Id);
-                companyService.Delete(testCompany1.Id);
-
-
-                offerService.Delete(testOffer11.Id);
-                offerService.Delete(testOffer21.Id);
-                offerService.Delete(testOffer22.Id);
+                
 
                 var companyList = companyService.GetAll();
                 foreach (var item in companyList)

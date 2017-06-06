@@ -116,14 +116,10 @@ namespace CDUnitTests
             Assert.IsTrue(list.Count >= 2);
             Assert.IsTrue(list.Any(li => li.Name == testName));
             Assert.IsTrue(list.Any(li => li.Name == testName2));
-
-
+            
             // delete them 
             companyService.Delete(company.Id);
             companyService.Delete(company2.Id);
-
-
-
         }
 
         private string RandomDigits()
