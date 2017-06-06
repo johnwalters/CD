@@ -17,12 +17,8 @@
             @Html.ActionLink("Create", "Create", "Offer", null, new {@class = "btn btn-success" })
         </div>
     </div>
-        @if(@Model.OfferList.Count == 0)
-        {
-        <h3>No offers to display yet.</h3>
-        }
-        else
-        {
+      
+       
         <div>
             <h3>Your offers:</h3>
         </div>
@@ -46,7 +42,11 @@
             }
 
         </table>
-        }
-   
+
+    @if (@Model.OfferList.Count == 0)
+    {
+        <h4>No offers exist.</h4>
+    }
+        
 </body>
 </html>
