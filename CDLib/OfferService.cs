@@ -13,6 +13,7 @@ namespace CDLib
     public class OfferService
     {
         private OfferRepo _repo;
+        private OfferCodeRepo _codeRepo;
         private static readonly ILog _logger =
              LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -21,6 +22,7 @@ namespace CDLib
         public OfferService()
         {
             _repo = new OfferRepo();
+            _codeRepo = new OfferCodeRepo();
             _logger.Debug("New OfferService");
         }
 
@@ -81,11 +83,12 @@ namespace CDLib
 
         //OfferCode methods
 
-        public void SaveOfferCode(Offer Offer)
+        public void SaveOfferCode(OfferCode OfferCode)
         {
+
             try
             {
-                _repo.Save(Offer);
+                _codeRepo.Save(OfferCode);
             }
             catch (Exception ex)
             {
@@ -98,7 +101,7 @@ namespace CDLib
         {
             try
             {
-                _repo.Delete(id);
+                _codeRepo.Delete(id);
             }
             catch (Exception ex)
             {
@@ -108,11 +111,11 @@ namespace CDLib
         }
 
 
-        public Offer GetOfferCode(int id)
+        public OfferCode GetOfferCode(int id)
         {
             try
             {
-                return _repo.Get(id);
+                return _codeRepo.Get(id);
             }
             catch (Exception ex)
             {
@@ -123,11 +126,11 @@ namespace CDLib
 
 
 
-        public List<Offer> GetAllOfferCodes(int offerId)
+        public List<OfferCode> GetAllOfferCodes(int offerId)
         {
             try
             {
-                return _repo.GetAll(offerId);
+                return _codeRepo.GetAll(offerId);
             }
             catch (Exception ex)
             {

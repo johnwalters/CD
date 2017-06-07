@@ -39,6 +39,16 @@ namespace CDLib.DataLayer
         }
 
        
-        
+        public void Save(OfferCode OfferCode)
+        {
+            if (OfferCode.Id == 0)
+            {
+                OfferCode.Id = new Data().CreateOfferCode(OfferCode);
+            }
+            else
+            {
+                new Data().UpdateOfferCode(OfferCode);
+            }
+        }
     }
 }

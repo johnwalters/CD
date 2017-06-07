@@ -50,7 +50,7 @@
     <Compile Include="CompanyService.cs" />
     <Compile Include="DataLayer\CompanyRepo.cs" />
     <Compile Include="DataLayer\Data.cs" />
-    <Compile Include="DataLayer\OfferCode.cs" />
+    <Compile Include="DataLayer\OfferCodeRepo.cs" />
     <Compile Include="DataLayer\OfferRepo.cs" />
     <Compile Include="Domain\Company.cs" />
     <Compile Include="Domain\Offer.cs" />

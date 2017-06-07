@@ -29,10 +29,6 @@ namespace CDUnitTests
                 var testUrl = "fakeurl.amazon.com/";
                 var testCategory = "Kitchen Supplies";
                 var testCompanyId = RandomInteger();
-                var testOfferCode = new OfferCode();
-                
-
-
 
                 Offer.Title = testTitle;
                 Offer.Description = testDescription;
@@ -84,6 +80,7 @@ namespace CDUnitTests
                 OfferService.DeleteOffer(OfferId);
                 Offer3 = OfferService.GetOffer(OfferId);
                 Assert.IsNull(Offer3);
+                
 
 
             }

@@ -173,14 +173,14 @@ namespace CDLib.DataLayer
             return offers;
         }
         #endregion
-        #region OfferId Methods
-        public int CreateOfferCode(OfferCode offerId)
+        #region OfferCode Methods
+        public int CreateOfferCode(OfferCode offerCode)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@OfferId", offerId.OfferId, dbType: DbType.String, direction: ParameterDirection.Input);
-            parameters.Add("@Code", offerId.Code, dbType: DbType.String, direction: ParameterDirection.Input);
-            parameters.Add("@ClaimingUser", offerId.ClaimingUser, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@OfferId", offerCode.OfferId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Code", offerCode.Code, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@ClaimingUser", offerCode.ClaimingUser, dbType: DbType.String, direction: ParameterDirection.Input);
 
             SqlConnection.Execute("OfferCode_Add", parameters, commandType: CommandType.StoredProcedure);
             int id = parameters.Get<int>("@Id");
