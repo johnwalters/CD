@@ -29,6 +29,7 @@ namespace CDUnitTests
                 var testUrl = "fakeurl.amazon.com/";
                 var testCategory = "Kitchen Supplies";
                 var testCompanyId = RandomInteger();
+                var testOfferCode = new OfferCode();
                 
 
 
@@ -41,12 +42,12 @@ namespace CDUnitTests
 
 
                 var OfferService = new OfferService();
-                OfferService.Save(Offer);
+                OfferService.SaveOffer(Offer);
                 Assert.IsTrue(Offer.Id != 0);
 
                 // get it, verify it's there
                 var OfferId = Offer.Id;
-                var Offer2 = OfferService.Get(OfferId);
+                var Offer2 = OfferService.GetOffer(OfferId);
                 Assert.IsNotNull(Offer2);
 
                 // verify property values
@@ -69,19 +70,19 @@ namespace CDUnitTests
                 Offer2.Title = testTitle2;
                 Offer2.Description = testDescription2;
                 Offer2.Category = testCategory2;
-                OfferService.Save(Offer2);
+                OfferService.SaveOffer(Offer2);
 
 
                 // get it again, verify property values
-                var Offer3 = OfferService.Get(OfferId);
+                var Offer3 = OfferService.GetOffer(OfferId);
                 Assert.AreEqual(testTitle2, Offer3.Title);
                 Assert.AreEqual(testDescription2, Offer3.Description);
                 Assert.AreEqual(testCategory2, Offer3.Category);
 
 
                 // delete it 
-                OfferService.Delete(OfferId);
-                Offer3 = OfferService.Get(OfferId);
+                OfferService.DeleteOffer(OfferId);
+                Offer3 = OfferService.GetOffer(OfferId);
                 Assert.IsNull(Offer3);
 
 
@@ -130,7 +131,7 @@ namespace CDUnitTests
                 testOffer11.CompanyId = testCompany1.Id;
 
                 //Saving offers of first company(First digit = company number, second digit = offer number)
-                offerService.Save(testOffer11);
+                offerService.SaveOffer(testOffer11);
 
                 //Creating offers for second company
                 Offer testOffer21 = new Offer();
@@ -148,25 +149,25 @@ namespace CDUnitTests
                 testOffer22.CompanyId = testCompany2.Id;
 
                 //Saving offers of second company(First digit = company number, second digit = offer number)
-                offerService.Save(testOffer21);
-                offerService.Save(testOffer22);
+                offerService.SaveOffer(testOffer21);
+                offerService.SaveOffer(testOffer22);
 
                 List<Offer> offerList1 = new List<Offer>();
-                offerList1 = offerService.GetAll(testCompany1.Id);//41 because id of company1 == 41
+                offerList1 = offerService.GetAllOffers(testCompany1.Id);//41 because id of company1 == 41
                 Assert.IsTrue(offerList1.Count == 1);
                 
                 List<Offer> offerList2 = new List<Offer>();
-                offerList2 = offerService.GetAll(testCompany2.Id);
+                offerList2 = offerService.GetAllOffers(testCompany2.Id);
                 Assert.IsTrue(offerList2.Count == 2);
                 
 
                 var companyList = companyService.GetAll();
                 foreach (var item in companyList)
                 {
-                    var offerList = offerService.GetAll(item.Id);
+                    var offerList = offerService.GetAllOffers(item.Id);
                     foreach (var item2 in offerList1)
                     {
-                        offerService.Delete(item2.Id);
+                        offerService.DeleteOffer(item2.Id);
                     }
                     companyService.Delete(item.Id);
                 }

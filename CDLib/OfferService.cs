@@ -16,13 +16,15 @@ namespace CDLib
         private static readonly ILog _logger =
              LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        //Offer Methods
+
         public OfferService()
         {
             _repo = new OfferRepo();
             _logger.Debug("New OfferService");
         }
 
-        public void Save(Offer Offer)
+        public void SaveOffer(Offer Offer)
         {
             try
             {
@@ -35,7 +37,7 @@ namespace CDLib
             }
         }
 
-        public void Delete(int id)
+        public void DeleteOffer(int id)
         {
             try
             {
@@ -49,7 +51,7 @@ namespace CDLib
         }
 
 
-        public Offer Get(int id)
+        public Offer GetOffer(int id)
         {
             try
             {
@@ -64,7 +66,7 @@ namespace CDLib
 
        
 
-        public List<Offer> GetAll(int companyId)
+        public List<Offer> GetAllOffers(int companyId)
         {
             try
             {
@@ -73,6 +75,63 @@ namespace CDLib
             catch (Exception ex)
             {
                 _logger.Error("Error during OfferService.GetAll", ex);
+                throw;
+            }
+        }
+
+        //OfferCode methods
+
+        public void SaveOfferCode(Offer Offer)
+        {
+            try
+            {
+                _repo.Save(Offer);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error during OfferService.SaveOfferCode()", ex);
+                throw;
+            }
+        }
+
+        public void DeleteOfferCode(int id)
+        {
+            try
+            {
+                _repo.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(String.Format("Error during OfferService.DeleteOfferCode({0}", id), ex);
+                throw;
+            }
+        }
+
+
+        public Offer GetOfferCode(int id)
+        {
+            try
+            {
+                return _repo.Get(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(String.Format("Error during OfferService.GetOfferCode({0})", id), ex);
+                throw;
+            }
+        }
+
+
+
+        public List<Offer> GetAllOfferCodes(int offerId)
+        {
+            try
+            {
+                return _repo.GetAll(offerId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error during OfferService.GetAllOfferCodes", ex);
                 throw;
             }
         }

@@ -26,7 +26,7 @@ namespace CDSite.Controllers
             OfferService offerService = new OfferService();
 
             var company = base.UserCompany;
-            var offerList = offerService.GetAll(company.Id);
+            var offerList = offerService.GetAllOffers(company.Id);
             foreach (var item in offerList)
             {
                 OfferViewModel offerViewModel = new OfferViewModel();
@@ -75,7 +75,7 @@ namespace CDSite.Controllers
             //offer.Url = model.Url;
 
 
-            // service.Save(offer);
+            // service.SaveOffer(offer);
             model.SuccessMessage = "Success - Profile saved.";
             return View(model);
         }
@@ -99,7 +99,7 @@ namespace CDSite.Controllers
             offer.CompanyId = company.Id;
             offer.Id = model.Id;
 
-            offerService.Save(offer);
+            offerService.SaveOffer(offer);
             
             model.SuccessMessage = "Success - Offer saved.";
             return RedirectToAction("Index");
@@ -113,7 +113,7 @@ namespace CDSite.Controllers
             var company = UserCompany;
             var offerService = new OfferService();
 
-            var offer = offerService.Get(id);
+            var offer = offerService.GetOffer(id);
             
             var model = new OfferViewModel();
             if(offer != null && offer.CompanyId != UserCompany.Id)
@@ -141,7 +141,7 @@ namespace CDSite.Controllers
         public ActionResult Delete(OfferViewModel model)
         {
             OfferService service = new OfferService();
-            service.Delete(model.Id);
+            service.DeleteOffer(model.Id);
             return RedirectToAction("Index");
         }
     }

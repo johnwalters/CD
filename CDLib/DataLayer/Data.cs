@@ -173,8 +173,56 @@ namespace CDLib.DataLayer
             return offers;
         }
         #endregion
+        #region OfferId Methods
+        public int CreateOfferCode(OfferCode offerId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@OfferId", offerId.OfferId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@Code", offerId.Code, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@ClaimingUser", offerId.ClaimingUser, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("OfferCode_Add", parameters, commandType: CommandType.StoredProcedure);
+            int id = parameters.Get<int>("@Id");
+            return id;
+        }
+
+        public void UpdateOfferCode(OfferCode offerCode)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", offerCode.Id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+            parameters.Add("@Code", offerCode.Code, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("OfferCode_Update", parameters, commandType: CommandType.StoredProcedure);
+
+        }
+        public void DeleteOfferCode(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+
+            SqlConnection.Execute("OfferCode_Delete", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public OfferCode GetOfferCode(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+
+            var offerCode = SqlConnection.Query<OfferCode>("OfferCode_Get", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            return offerCode;
+        }
+        public List<OfferCode> GetAllOfferCodes(int offerId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@OfferId", offerId, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            var offerCodes = SqlConnection.Query<OfferCode>("OfferCode_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
+            return offerCodes;
+        }
+        #endregion
 
     }
 
- 
+
 }
