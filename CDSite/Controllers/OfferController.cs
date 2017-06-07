@@ -68,14 +68,6 @@ namespace CDSite.Controllers
             var company = UserCompany;
             var companyService = new CompanyService();
            
-
-
-            //offer.Title = model.Title;
-            //offer.Description = model.Description;
-            //offer.Url = model.Url;
-
-
-            // service.SaveOffer(offer);
             model.SuccessMessage = "Success - Profile saved.";
             return View(model);
         }
