@@ -8,9 +8,10 @@ namespace CDSite.Models
 {
     public class OfferCodeListViewModel
     {
+        public int OfferId { get; set; }
+        public string OfferTitle { get; set; }
+
         public List<OfferCodeViewModel> OfferCodeList { get; set; }
-        [Display(Name = "Code")]
-        public string Title { get; set; }
 
     }
 }

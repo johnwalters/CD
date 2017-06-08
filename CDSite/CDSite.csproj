@@ -297,11 +297,13 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Offer\Create.cshtml" />
     <Content Include="Views\Offer\Edit.cshtml" />
+    <Content Include="Views\OfferCode\List.cshtml" />
+    <Content Include="Views\OfferCode\Create.cshtml" />
+    <Content Include="Views\OfferCode\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\OfferCode\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -9,10 +9,12 @@ namespace CDSite.Models
     public class OfferCodeViewModel
     {
         public int Id { get; set; }
+        public int OfferId { get; set; }
 
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+        
 
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }

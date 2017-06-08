@@ -12,22 +12,25 @@ namespace CDSite.Controllers
     public class OfferCodeController : BaseController
     {
         // GET: OfferCode
-        public ActionResult List(int id)
+        public ActionResult List(int offerId)
         {
             OfferCodeListViewModel model = new OfferCodeListViewModel();
+            model.OfferId = offerId;
+            OfferService offerService = new OfferService();
+            Offer offer = offerService.GetOffer(offerId);
+            model.OfferTitle = offer.Title;
             model.OfferCodeList = new List<OfferCodeViewModel>();
             //Pull data from database and display in table.
-            OfferService offerService = new OfferService();
-
-            var offer = new Offer();
-            offer.Id = id;
-
             var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
             var offerList = offerService.GetAllOfferCodes(offer.Id);
             foreach (var item in offerCodeList)
             {
                 OfferCodeViewModel offerCodeViewModel = new OfferCodeViewModel();
                 offerCodeViewModel.Code = item.Code;
+                offerCodeViewModel.OfferId = item.OfferId;
+                offerCodeViewModel.Id = item.Id;
+                model.OfferCodeList.Add(offerCodeViewModel);
+
             }
             return View(model);
         }
@@ -39,19 +42,29 @@ namespace CDSite.Controllers
         //    var companyService = new CompanyService();
         //    return View(model);
         //}
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Create(OfferViewModel model)
+        public ActionResult Create(int offerId)
         {
-            ViewBag.Message = "Create page.";
+            var model = new OfferCodeViewModel { };
 
-            var offer = new Offer();
             var offerService = new OfferService();
 
-            model.SuccessMessage = "Success - Offer Code saved.";
+            model.OfferId = offerId;
+            model.Id = 0;
+
             return View(model);
         }
+        //[HttpPost]
+        //[Authorize]
+        //public ActionResult Create(OfferCodeViewModel model)
+        //{
+        //    ViewBag.Message = "Create page.";
+
+        //    var offer = new Offer();
+        //    var offerService = new OfferService();
+
+        //    model.SuccessMessage = "Success - Offer Code saved.";
+        //    return View(model);
+        //}
 
         [HttpPost]
         [Authorize]
@@ -66,11 +79,12 @@ namespace CDSite.Controllers
             var offerService = new OfferService();
 
             offerCode.Code = model.Code;
-
+            offerCode.OfferId = model.OfferId;
+            offerCode.Id = model.Id;
             offerService.SaveOfferCode(offerCode);
 
             model.SuccessMessage = "Success - Offer Code saved.";
-            return RedirectToAction("Edit");
+            return RedirectToAction("List", new { offerId = model.OfferId });
         }
 
         [HttpGet]
@@ -104,6 +118,8 @@ namespace CDSite.Controllers
             else
             {
                 model.Code = offerCode.Code;
+                model.OfferId = offerCode.OfferId;
+                model.Id = offerCode.Id;
             }
 
             return View(model);

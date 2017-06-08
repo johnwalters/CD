@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Offers";
 }
-
-
 <!DOCTYPE html>
 
 <html>
@@ -14,7 +12,7 @@
 <body>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Create", "Create", "Offer", null, new {@class = "btn btn-success" })
+            @Html.ActionLink("Create Offer", "Create", "Offer", null, new {@class = "btn btn-success" })
         </div>
     </div>
       
@@ -28,6 +26,7 @@
                 <th>Description</th>
                 <th>URL</th>
                 <th>Category</th>
+                <th>Offer Codes</th>
             </tr>
 
 
@@ -38,6 +37,7 @@
                     <td>@offer.Description</td>
                     <td>@offer.Url</td>
                     <td>@offer.Category</td>
+                    <td>@Html.ActionLink("See Codes","List" ,"OfferCode", new { offerId = offer.Id }, null)</td>
                 </tr>
             }
 

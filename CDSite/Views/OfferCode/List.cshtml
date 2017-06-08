@@ -1,0 +1,37 @@
+﻿@model CDSite.Models.OfferCodeListViewModel
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+</head>
+<body>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Create Code", "Create", "OfferCode", new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
+        </div>
+    </div>
+    <div> 
+        <div>
+            <h3>Offer codes for @Model.OfferTitle:</h3>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Code</th>
+            </tr>
+               
+    @foreach (var offerCode in Model.OfferCodeList)
+    {
+        <tr>
+            <td>@Html.ActionLink(@offerCode.Code, "Edit", new { id = offerCode.Id })</td>
+        </tr>
+    }
+                
+            </table>
+</div>
+</body>
+</html>
