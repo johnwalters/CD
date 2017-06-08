@@ -124,5 +124,14 @@ namespace CDSite.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Delete(OfferCodeViewModel model)
+        {
+            OfferService service = new OfferService();
+            service.DeleteOfferCode(model.Id);
+            
+            return RedirectToAction("List", new { offerId = model.OfferId });
+        }
     }
 }
