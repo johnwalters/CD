@@ -10,9 +10,12 @@
     <title>List</title>
 </head>
 <body>
+   
+   
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Create Code", "Create", "OfferCode", new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Create Code", "Create", "OfferCode", 
+           new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
         </div>
     </div>
     <div> 
@@ -33,5 +36,9 @@
                 
             </table>
 </div>
+    @if (!String.IsNullOrEmpty(@Model.ErrorMessage))
+    {
+    <div class="alert alert-danger" role="alert"><strong>@Model.ErrorMessage</strong></div>
+    }
 </body>
 </html>

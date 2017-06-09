@@ -12,6 +12,7 @@ namespace CDSite.Models
         public string OfferTitle { get; set; }
 
         public List<OfferCodeViewModel> OfferCodeList { get; set; }
+        public string ErrorMessage { get; set; }
 
     }
 }

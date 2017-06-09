@@ -20,5 +20,6 @@ namespace CDSite.Models
 
         [Display(Name = "Category")]
         public string Category { get; set; }
+
     }
 }

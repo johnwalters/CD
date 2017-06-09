@@ -14,12 +14,20 @@ namespace CDSite.Controllers
         // GET: OfferCode
         public ActionResult List(int offerId)
         {
+            
             OfferCodeListViewModel model = new OfferCodeListViewModel();
             model.OfferId = offerId;
+            model.OfferCodeList = new List<OfferCodeViewModel>();
             OfferService offerService = new OfferService();
             Offer offer = offerService.GetOffer(offerId);
+            
+            if(offer == null || !offerIsOwnedByUserCompany(offerId))
+            {
+                model.ErrorMessage = " Offer not found.";
+                return View(model);
+            }
             model.OfferTitle = offer.Title;
-            model.OfferCodeList = new List<OfferCodeViewModel>();
+            
             //Pull data from database and display in table.
             var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
             var offerList = offerService.GetAllOfferCodes(offer.Id);
@@ -49,6 +57,11 @@ namespace CDSite.Controllers
             var offerService = new OfferService();
 
             model.OfferId = offerId;
+            
+            if(!offerIsOwnedByUserCompany(offerId))
+            {
+                return RedirectToAction("List", new { offerId });
+            }
             model.Id = 0;
 
             return View(model);
@@ -74,53 +87,65 @@ namespace CDSite.Controllers
             {
                 return View(model);
             }
-
-            var offerCode = new OfferCode();
             var offerService = new OfferService();
+            if (model.Id != 0)//not creating a new offerCode, but rather editing
+            {
+                var offerCode = offerService.GetOfferCode(model.Id);
+                if (offerCode != null)
+                {
+                    if (!offerIsOwnedByUserCompany(offerCode.OfferId))
+                    {
+                        return RedirectToAction("List", new { offerId = offerCode.OfferId });
+                    }
+                }
+                else//if offercode == null
+                {
+                    return RedirectToAction("List", new { offerId = model.OfferId });
+                }
+                offerCode.Code = model.Code;
+                offerCode.OfferId = model.OfferId;
+                offerCode.Id = model.Id;
+                offerService.SaveOfferCode(offerCode);
 
-            offerCode.Code = model.Code;
-            offerCode.OfferId = model.OfferId;
-            offerCode.Id = model.Id;
-            offerService.SaveOfferCode(offerCode);
-
-            model.SuccessMessage = "Success - Offer Code saved.";
+                model.SuccessMessage = "Success - Offer Code saved.";
+            }
+            else //creating new offer code
+            {
+                if(!offerIsOwnedByUserCompany(model.OfferId))
+                {
+                    return RedirectToAction("List", new { offerId = model.OfferId });
+                }
+            }
             return RedirectToAction("List", new { offerId = model.OfferId });
+
         }
 
         [HttpGet]
         [Authorize]
         public ActionResult Edit(int id)
         {
-            // ViewBag.Message = "Edit page.";
+            ViewBag.Message = "Edit page.";
 
             var offerService = new OfferService();
 
             var offerCode = offerService.GetOfferCode(id);
             var model = new OfferCodeViewModel();
 
+            
             // if offercode not null, then get offer. if offer not null, then verify offer.company is user's company
-            if (offerCode != null)
+            if(offerCode == null)
             {
-                Offer offer = new Offer();
-                offer = offerService.GetOffer(offerCode.OfferId);
-                var company = UserCompany;
-                if (offer.CompanyId != company.Id)
-                {
-                    offerCode = null;
-                }
+                return RedirectToAction("List", new { offerId = 0 });
             }
-            if (offerCode == null)
+            if(!offerCodeIsOwnedByUserCompany(offerCode))
             {
-                //offer ain't there.
-                model.ErrorMessage = "Offer Code not found.";
+                return RedirectToAction("List", new { offerId = offerCode.OfferId });
             }
-
-            else
-            {
+            
                 model.Code = offerCode.Code;
                 model.OfferId = offerCode.OfferId;
                 model.Id = offerCode.Id;
-            }
+            
 
             return View(model);
         }
@@ -128,10 +153,54 @@ namespace CDSite.Controllers
         [HttpPost]
         public ActionResult Delete(OfferCodeViewModel model)
         {
-            OfferService service = new OfferService();
-            service.DeleteOfferCode(model.Id);
-            
-            return RedirectToAction("List", new { offerId = model.OfferId });
+            if (!offerIsOwnedByUserCompany(model.OfferId))
+            {
+                return RedirectToAction("List", new { offerId = model.OfferId });
+            }
+                OfferService service = new OfferService();
+                service.DeleteOfferCode(model.Id);
+                return RedirectToAction("List", new { offerId = model.OfferId });
+        }
+
+        public bool offerCodeIsOwnedByUserCompany(OfferCode offerCode)
+        {            OfferService offerService = new OfferService();
+            if (offerCode != null)
+            {
+                Offer offer = new Offer();
+                offer = offerService.GetOffer(offerCode.OfferId);
+                var company = UserCompany;
+                if (offer != null && offer.CompanyId != company.Id)
+                {
+                    offerCode = null;
+                }
+                if (offer == null)
+                {
+                    //offer ain't there.
+                    return false;
+                }
+                //if we got this far, should be valid.
+                return true;
+            }
+            //if offer code is null
+            else { return false; }
+        }
+        //overloaded for offerId
+        public bool offerIsOwnedByUserCompany(int offerId)
+        {
+            OfferService offerService = new OfferService();
+            var offer = offerService.GetOffer(offerId);
+            if (offer != null)
+            {
+                var company = UserCompany;
+                if (offer.CompanyId != company.Id)
+                {
+                    return false;
+                }
+                //if we got this far, should be valid.
+                return true;
+            }
+            //if offer code is null
+            else { return false; }
         }
     }
 }
