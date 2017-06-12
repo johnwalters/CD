@@ -23,7 +23,7 @@ namespace CDSite.Controllers
             
             if(offer == null || !offerIsOwnedByUserCompany(offerId))
             {
-                model.ErrorMessage = " Offer not found.";
+                model.ErrorMessage = "Offer not found.";
                 return View(model);
             }
             model.OfferTitle = offer.Title;
@@ -38,7 +38,6 @@ namespace CDSite.Controllers
                 offerCodeViewModel.OfferId = item.OfferId;
                 offerCodeViewModel.Id = item.Id;
                 model.OfferCodeList.Add(offerCodeViewModel);
-
             }
             return View(model);
         }
@@ -88,9 +87,11 @@ namespace CDSite.Controllers
                 return View(model);
             }
             var offerService = new OfferService();
+            var offerCode = new OfferCode();
             if (model.Id != 0)//not creating a new offerCode, but rather editing
             {
-                var offerCode = offerService.GetOfferCode(model.Id);
+               offerCode = offerService.GetOfferCode(model.Id);
+
                 if (offerCode != null)
                 {
                     if (!offerIsOwnedByUserCompany(offerCode.OfferId))
@@ -102,11 +103,6 @@ namespace CDSite.Controllers
                 {
                     return RedirectToAction("List", new { offerId = model.OfferId });
                 }
-                offerCode.Code = model.Code;
-                offerCode.OfferId = model.OfferId;
-                offerCode.Id = model.Id;
-                offerService.SaveOfferCode(offerCode);
-
                 model.SuccessMessage = "Success - Offer Code saved.";
             }
             else //creating new offer code
@@ -116,6 +112,12 @@ namespace CDSite.Controllers
                     return RedirectToAction("List", new { offerId = model.OfferId });
                 }
             }
+            offerCode.Code = model.Code;
+            offerCode.OfferId = model.OfferId;
+            offerCode.Id = model.Id;
+            offerService.SaveOfferCode(offerCode);
+
+            model.SuccessMessage = "Success - Offer Code saved.";
             return RedirectToAction("List", new { offerId = model.OfferId });
 
         }
@@ -153,17 +155,19 @@ namespace CDSite.Controllers
         [HttpPost]
         public ActionResult Delete(OfferCodeViewModel model)
         {
-            if (!offerIsOwnedByUserCompany(model.OfferId))
+            OfferService service = new OfferService();
+            var offerCode = service.GetOfferCode(model.Id);
+            if (!offerCodeIsOwnedByUserCompany(offerCode))
             {
                 return RedirectToAction("List", new { offerId = model.OfferId });
             }
-                OfferService service = new OfferService();
                 service.DeleteOfferCode(model.Id);
                 return RedirectToAction("List", new { offerId = model.OfferId });
         }
 
         public bool offerCodeIsOwnedByUserCompany(OfferCode offerCode)
-        {            OfferService offerService = new OfferService();
+        {
+            OfferService offerService = new OfferService();
             if (offerCode != null)
             {
                 Offer offer = new Offer();
@@ -173,7 +177,7 @@ namespace CDSite.Controllers
                 {
                     offerCode = null;
                 }
-                if (offer == null)
+                if (offerCode == null)
                 {
                     //offer ain't there.
                     return false;
