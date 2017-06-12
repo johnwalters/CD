@@ -10,10 +10,12 @@ namespace CDSite.Models
     {
         public int Id { get; set; }
         public int OfferId { get; set; }
-
-        [Required]
+        
         [Display(Name = "Code")]
         public string Code { get; set; }
+
+        [Display(Name = "Codes")]
+        public string Codes { get; set; }
         
 
         public string SuccessMessage { get; set; }

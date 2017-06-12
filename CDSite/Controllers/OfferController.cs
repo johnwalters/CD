@@ -77,6 +77,7 @@ namespace CDSite.Controllers
         {
             if (!ModelState.IsValid)
             {
+                
                 return View(model);
             }
 

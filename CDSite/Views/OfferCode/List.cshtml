@@ -1,7 +1,5 @@
 ﻿@model CDSite.Models.OfferCodeListViewModel
 
-
-
 <!DOCTYPE html>
 
 <html>
@@ -18,6 +16,13 @@
            new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Create Codes in Bulk", "CreateBulk", "OfferCode",
+           new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
+        </div>
+    </div>
+
     <div> 
         <div>
             <h3>Offer codes for @Model.OfferTitle:</h3>

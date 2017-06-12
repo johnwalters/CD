@@ -42,13 +42,7 @@ namespace CDSite.Controllers
             return View(model);
         }
 
-        //public ActionResult Create(ManageMessageId? message)
-        //{
-        //    var company = UserCompany;
-        //    var model = new OfferViewModel { };
-        //    var companyService = new CompanyService();
-        //    return View(model);
-        //}
+    
         public ActionResult Create(int offerId)
         {
             var model = new OfferCodeViewModel { };
@@ -65,23 +59,65 @@ namespace CDSite.Controllers
 
             return View(model);
         }
-        //[HttpPost]
-        //[Authorize]
-        //public ActionResult Create(OfferCodeViewModel model)
-        //{
-        //    ViewBag.Message = "Create page.";
 
-        //    var offer = new Offer();
-        //    var offerService = new OfferService();
+        [HttpGet]
+        public ActionResult CreateBulk(int offerId)
+        {
+            var model = new OfferCodeViewModel();
 
-        //    model.SuccessMessage = "Success - Offer Code saved.";
-        //    return View(model);
-        //}
+            var offerService = new OfferService();
+
+            model.OfferId = offerId;
+
+            if(!offerIsOwnedByUserCompany(offerId))
+            {
+                return RedirectToAction("List", new { offerId });
+            }
+            model.Id = 0;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateBulk (OfferCodeViewModel model)
+        {
+            if (String.IsNullOrWhiteSpace(model.Codes))
+            {
+                ModelState.AddModelError("Codes", "Codes are required");
+            }
+            if (!ModelState.IsValid)
+            {
+                
+                return View(model);
+            }
+            var offerService = new OfferService();
+            var offerCode = new OfferCode();
+
+            List<OfferCode> codesList = new List<OfferCode>();
+            string codes = model.Codes;
+            string[] splitCodes = codes.Split(null);
+            foreach (var item in splitCodes)
+            {
+                if (String.IsNullOrEmpty(item)) { continue; }
+                //Handle split and save each code accordingly
+                offerCode.Code = item;
+                offerCode.OfferId = model.OfferId;
+                offerCode.Id = model.Id;
+                offerService.SaveOfferCode(offerCode);
+            }
+            model.SuccessMessage = "Success - Offer Codes saved.";
+            return RedirectToAction("List", new { offerId = model.OfferId });
+        }
+       
 
         [HttpPost]
         [Authorize]
         public ActionResult Edit(OfferCodeViewModel model)
         {
+            if (String.IsNullOrWhiteSpace(model.Code))
+            {
+                ModelState.AddModelError("Code", "Code is required");
+            }
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -131,8 +167,8 @@ namespace CDSite.Controllers
             var offerService = new OfferService();
 
             var offerCode = offerService.GetOfferCode(id);
-            var model = new OfferCodeViewModel();
 
+            var model = new OfferCodeViewModel();
             
             // if offercode not null, then get offer. if offer not null, then verify offer.company is user's company
             if(offerCode == null)
@@ -143,12 +179,9 @@ namespace CDSite.Controllers
             {
                 return RedirectToAction("List", new { offerId = offerCode.OfferId });
             }
-            
-                model.Code = offerCode.Code;
-                model.OfferId = offerCode.OfferId;
-                model.Id = offerCode.Id;
-            
-
+            model.Code = offerCode.Code;
+            model.OfferId = offerCode.OfferId;
+            model.Id = offerCode.Id;
             return View(model);
         }
 
