@@ -9,12 +9,12 @@ using System.Web.Mvc;
 
 namespace CDSite.Controllers
 {
+    
     public class OfferCodeController : BaseController
     {
         // GET: OfferCode
         public ActionResult List(int offerId)
         {
-            
             OfferCodeListViewModel model = new OfferCodeListViewModel();
             model.OfferId = offerId;
             model.OfferCodeList = new List<OfferCodeViewModel>();
