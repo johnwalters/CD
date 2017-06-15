@@ -34,6 +34,8 @@ namespace CDSite.Models
 
         public int OfferId { get; set; }
 
+        [Display(Name = "Code")]
+        public string OfferCode { get; set; }
         
     }
 

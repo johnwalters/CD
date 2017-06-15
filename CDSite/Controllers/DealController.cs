@@ -225,8 +225,10 @@ namespace CDSite.Controllers
                 if (ModelState.IsValid)
                 {
                 //password = 8^)U/G/D49HKT{2R
+                var offerService = new OfferService();
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                    var result = await UserManager.CreateAsync(user, "8^)U/G/D49HKT{2R");
+                
+                    var result = await UserManager.CreateAsync(user, "kf6Ua?a<2DhfZ<,t");
                     if (result.Succeeded)
                     {
                         //Line below commented out to prevent log in until the user is confirmed.
@@ -249,7 +251,9 @@ namespace CDSite.Controllers
 
 
                         ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
-                                        + "before you can log in.";
+                                        + "before you can log in. ";
+
+                    ViewBag.Message += callbackUrl;
 
                         return View("Info");
                         //return RedirectToAction("Index", "Home");
@@ -264,14 +268,25 @@ namespace CDSite.Controllers
             //
             // GET: /Account/ConfirmEmail
             [AllowAnonymous]
-            public async Task<ActionResult> ConfirmEmail(string userId, string code)
+            public async Task<ActionResult> ConfirmEmail(string userId, int offerId, string code)
             {
-                if (userId == null || code == null)
+                if (userId == null || offerId == 0)
                 {
                     return View("Error");
                 }
+            OfferService offerService = new OfferService();
+            var model = new DealRegisterViewModel();
+            var offerCode = offerService.ClaimNextCode(offerId, userId);
+            model.OfferCode = offerCode;
                 var result = await UserManager.ConfirmEmailAsync(userId, code);
-                return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            if(result.Succeeded)
+            {
+                return View("ConfirmEmail", model);
+            }
+            else
+            {
+                return View("Error");
+            }
             }
 
            
