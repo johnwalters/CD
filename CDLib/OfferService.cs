@@ -66,7 +66,18 @@ namespace CDLib
             }
         }
 
-       
+        public Offer GetOfferByToken(string token)
+        {
+            try
+            {
+                return _repo.Get(token);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(String.Format("Error during OfferService.Get({0})", token), ex);
+                throw;
+            }
+        }
 
         public List<Offer> GetAllOffers(int companyId)
         {
@@ -139,10 +150,7 @@ namespace CDLib
             }
         }
 
-        //public Offer GetOfferByToken(string token)
-        //{
-        //    return;
-        //}
+     
 
         public string ClaimNextCode(int offerId, string userId)
         {

@@ -33,6 +33,11 @@ namespace CDLib.DataLayer
             return new Data().GetOffer(id);
         }
 
+        public Offer Get(string token)
+        {
+            return new Data().GetOffer(token);
+        }
+
         public List<Offer> GetAll(int companyId)
         {
             return new Data().GetAllOffers(companyId);

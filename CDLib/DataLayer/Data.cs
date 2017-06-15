@@ -164,6 +164,15 @@ namespace CDLib.DataLayer
             return offer;
         }
 
+        public Offer GetOffer(string token)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Token", token, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            var offer = SqlConnection.Query<Offer>("Offer_GetByToken", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            return offer;
+        }
+
         public List<Offer> GetAllOffers(int companyId)
         {
             var parameters = new DynamicParameters();
@@ -212,6 +221,9 @@ namespace CDLib.DataLayer
             var offerCode = SqlConnection.Query<OfferCode>("OfferCode_Get", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
             return offerCode;
         }
+        
+      
+
         public List<OfferCode> GetAllOfferCodes(int offerId)
         {
             var parameters = new DynamicParameters();
