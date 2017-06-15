@@ -211,6 +211,7 @@ namespace CDSite.Controllers
             Offer offer =  offerService.GetOffer(offerId);
             model.Title = offer.Title;
             model.Description = offer.Description;
+            model.OfferId = offerId;
             return View(model);
             }
 
@@ -237,11 +238,11 @@ namespace CDSite.Controllers
                         //Create company with user ID
                      
 
-                        //Add user role of seller
+                        //Add user role of buyer
                         await UserManager.AddToRoleAsync(user.Id, "Buyer");
 
 
-                        string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
+                        string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account", model.OfferId);
 
                         // Uncomment to debug locally 
                         // TempData["ViewBagLink"] = callbackUrl;
@@ -273,105 +274,7 @@ namespace CDSite.Controllers
                 return View(result.Succeeded ? "ConfirmEmail" : "Error");
             }
 
-            //
-            // GET: /Account/ForgotPassword
-            //[AllowAnonymous]
-            //public ActionResult ForgotPassword()
-            //{
-            //    return View();
-            //}
-
-            ////
-            //// POST: /Account/ForgotPassword
-            //[HttpPost]
-            //[AllowAnonymous]
-            //[ValidateAntiForgeryToken]
-            //public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            //        var user = await UserManager.FindByNameAsync(model.Email);
-            //        if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-            //        {
-            //            // Don't reveal that the user does not exist or is not confirmed
-            //            return View("ForgotPasswordConfirmation");
-            //        }
-
-            //        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-            //        // Send an email with this link
-
-            //        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-            //        var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-            //        await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-            //        return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            //    }
-
-            //    // If we got this far, something failed, redisplay form
-            //    return View(model);
-            //}
-
-            ////
-            //// GET: /Account/ForgotPasswordConfirmation
-            //[AllowAnonymous]
-            //public ActionResult ForgotPasswordConfirmation()
-            //{
-            //    return View();
-            //}
-
-            ////
-            //// GET: /Account/ResetPassword
-            //[AllowAnonymous]
-            //public ActionResult ResetPassword(string code)
-            //{
-            //    return code == null ? View("Error") : View();
-            //}
-
-            ////
-            //// POST: /Account/ResetPassword
-            //[HttpPost]
-            //[AllowAnonymous]
-            //[ValidateAntiForgeryToken]
-            //public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return View(model);
-            //    }
-            //    var user = await UserManager.FindByNameAsync(model.Email);
-            //    if (user == null)
-            //    {
-            //        // Don't reveal that the user does not exist
-            //        return RedirectToAction("ResetPasswordConfirmation", "Account");
-            //    }
-            //    var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            //    if (result.Succeeded)
-            //    {
-            //        return RedirectToAction("ResetPasswordConfirmation", "Account");
-            //    }
-            //    AddErrors(result);
-            //    return View();
-            //}
-
-            ////
-            //// GET: /Account/ResetPasswordConfirmation
-            //[AllowAnonymous]
-            //public ActionResult ResetPasswordConfirmation()
-            //{
-            //    return View();
-            //}
-
-            ////
-            //// POST: /Deal/ExternalLogin
-            //[HttpPost]
-            //[AllowAnonymous]
-            //[ValidateAntiForgeryToken]
-            //public ActionResult ExternalLogin(string provider, string returnUrl)
-            //{
-            //    // Request a redirect to the external login provider
-            //    return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Deal", new { ReturnUrl = returnUrl }));
-            //}
-
-            //
+           
             // GET: /Deal/SendCode
             [AllowAnonymous]
             public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
@@ -570,13 +473,13 @@ namespace CDSite.Controllers
                 }
             }
 
-            private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+            private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject, int offerId)
             {
                 string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
-                var callbackUrl = Url.Action("ConfirmEmail", "Deal",
-                   new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+                var callbackUrl = Url.Action("ConfirmEmail", "Deal", 
+                   new { userId = userID, code = code , offerId = offerId}, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(userID, subject,
-                   "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                   "Please receive your code by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                 return callbackUrl;
             }

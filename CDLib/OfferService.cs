@@ -138,5 +138,23 @@ namespace CDLib
                 throw;
             }
         }
+
+        //public Offer GetOfferByToken(string token)
+        //{
+        //    return;
+        //}
+
+        public string ClaimNextCode(int offerId, string userId)
+        {
+            try
+            {
+                return _repo.ClaimNextCode(offerId, userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error during OfferService.ClaimNextCode", ex);
+                throw;
+            }
+        }
     }
 }

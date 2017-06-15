@@ -220,6 +220,17 @@ namespace CDLib.DataLayer
             var offerCodes = SqlConnection.Query<OfferCode>("OfferCode_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
             return offerCodes;
         }
+
+        public string ClaimNextCode(int offerId, string userId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@OfferId", offerId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@UserId", userId, dbType: DbType.String, direction: ParameterDirection.Input);
+            var nextCode = SqlConnection.Query<string>("Offer_ClaimNextCode", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            //not sure if ToString is the right thing to show
+            
+            return nextCode;
+        }
         #endregion
 
     }

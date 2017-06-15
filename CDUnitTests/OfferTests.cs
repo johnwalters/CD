@@ -168,20 +168,10 @@ namespace CDUnitTests
                     }
                     companyService.Delete(item.Id);
                 }
-
-
-
-
-
-
-
+                
             }
 
         }
-        
-        
-      
-
 
     }
 }

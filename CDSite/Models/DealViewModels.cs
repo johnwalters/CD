@@ -31,6 +31,9 @@ namespace CDSite.Models
 
         [Display(Name = "Description")]
         public string Description { get; set; }
+
+        public int OfferId { get; set; }
+
         
     }
 
