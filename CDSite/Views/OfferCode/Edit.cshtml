@@ -9,6 +9,11 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Edit Offer Code</title>
+    <style>
+        span.link{
+            font-size:18px;
+        }
+    </style>
 </head>
 <body>
     @using (Html.BeginForm("Edit", "OfferCode", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -21,12 +26,24 @@
                     @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @Html.HiddenFor(m => m.OfferId)
-            @Html.HiddenFor(m => m.Id)
+            
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default" value="Submit" />
-                </div>
+                    <div class="conatiner">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <span class="link">
+                                    @Html.ActionLink("Back to List", "List", "OfferCode", new { offerId = Model.OfferId }, null)
+                                </span>
+                            </div>
+                            @Html.HiddenFor(m => m.OfferId)
+                            @Html.HiddenFor(m => m.Id)
+                            <div class="col-sm2">
+                                <input type="submit" class="btn btn-default" value="Submit" />
+                            </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
     }
    @* @if(true)  @*TODO: Change true to company matches user's company*@

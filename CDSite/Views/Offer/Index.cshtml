@@ -8,11 +8,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Offers</title>
+    <style>
+        .row{
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Create Offer", "Create", "Offer", null, new {@class = "btn btn-success" })
+    <div class="col-md-10">
+        @* WhiteSpace *@
+    </div>
+    <div class="col-md-2">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Create Offer", "Create", "Offer", null, new { @class = "btn btn-success" })
+            </div>
+            </div>
         </div>
     </div>
       

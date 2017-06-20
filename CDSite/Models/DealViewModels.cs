@@ -32,6 +32,8 @@ namespace CDSite.Models
         [Display(Name = "Description")]
         public string Description { get; set; }
 
+
+        //TODO: Change this to Token
         public int OfferId { get; set; }
 
         [Display(Name = "Code")]
