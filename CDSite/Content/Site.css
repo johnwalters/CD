@@ -36,4 +36,10 @@ textarea {
 .btn-danger{
     background-color: firebrick;
 }
+div ul.nav.navbar-nav li a{
+    color:aliceblue;
+}
+a.navbar-brand{
+    color: aliceblue !important;
+}
 

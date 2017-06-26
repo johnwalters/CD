@@ -220,24 +220,45 @@ namespace CDSite.Controllers
         {
             var offerService = new OfferService();
             Offer offer = offerService.GetOfferByToken(offerToken);
-            List<OfferCode> offerCodeList = new List<OfferCode>();
+            //List<OfferCode> offerCodeList = new List<OfferCode>();
             int nullCount = 0;
-            foreach (OfferCode item in offerService.GetAllOfferCodes(offer.Id))
+            var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
+            return offerCodeList.Any(erik => String.IsNullOrEmpty(erik.ClaimingUser));
+            //foreach (OfferCode item in offerCodeList)
+            //{
+            //    offerCodeList.Add(item);
+            //    if (item.ClaimingUser == null)
+            //    {
+            //        nullCount++;
+            //    }
+            //}
+            //if (nullCount > 0)
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+        }
+
+        public string CodeForUser(string offerToken, string userId)
+        {
+            var offerService = new OfferService();
+            Offer offer = offerService.GetOfferByToken(offerToken);
+
+            int nullCount = 0;
+            var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
+            var offerCode =  offerCodeList.Where(erik => erik.ClaimingUser == userId).FirstOrDefault();
+            if (offerCode != null)
             {
-                offerCodeList.Add(item);
-                if (item.ClaimingUser == null)
-                {
-                    nullCount++;
-                }
-            }
-            if (nullCount > 0)
-            {
-                return true;
+                return offerCode.Code;
             }
             else
             {
-                return false;
+                return null;
             }
+          
         }
         //
         // POST: /Account/Register
@@ -303,6 +324,9 @@ namespace CDSite.Controllers
             var offer = offerService.GetOfferByToken(offerToken);
             var offerCode = offerService.ClaimNextCode(offer.Id, userId);
             model.OfferCode = offerCode;
+            model.Title = offer.Title;
+            model.Description = offer.Description;
+            model.Url = offer.Url;
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
