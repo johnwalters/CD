@@ -7,6 +7,8 @@
 
 @using (Html.BeginForm("Register", "Deal", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+    if (Model.IsCodeAvailable)
+    {
     @Html.AntiForgeryToken()
     <h4>Create a new account.</h4>
     <hr />
@@ -14,7 +16,7 @@
     <div>
         Thank you for choosing a coupon for @Model.Title
     </div>
-    @Html.HiddenFor(m => m.OfferId)
+    @Html.HiddenFor(m => m.OfferToken)
     <div>
         Please enter your email address.
     </div>
@@ -29,7 +31,12 @@
             <input type="submit" class="btn btn-default" value="Register" />
         </div>
     </div>
-}
+    }
+    else
+    {
+        <p class="warning"> Sorry. There are no codes available for @Model.Title at this time :(</p>
+    }
+    }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -6,6 +6,12 @@
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        Here is your code: @Model.OfferCode
+        @if (String.IsNullOrEmpty(Model.OfferCode))
+        {
+           <p class="warning"> Sorry. No codes available for this product :( </p>
+        }
+        else {
+           <p> Here is your code: @Model.OfferCode</p>
+                }
     </p>
 </div>
