@@ -32,7 +32,7 @@ namespace CDLib.DataLayer
             return new Data().GetOfferCode(id);
         }
 
-        public List<OfferCode> GetAll(int offerId)
+        public List<OfferCodeExtended> GetAll(int offerId)
         {
             return new Data().GetAllOfferCodes(offerId);
         }

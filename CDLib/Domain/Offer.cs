@@ -18,4 +18,6 @@ namespace CDLib.Domain
         public string Category { get; set; }
         public string Token { get; set; }
     }
+
+
 }

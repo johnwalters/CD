@@ -224,12 +224,12 @@ namespace CDLib.DataLayer
         
       
 
-        public List<OfferCode> GetAllOfferCodes(int offerId)
+        public List<OfferCodeExtended> GetAllOfferCodes(int offerId)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@OfferId", offerId, dbType: DbType.String, direction: ParameterDirection.Input);
+            parameters.Add("@OfferId", offerId, dbType: DbType.Int32, direction: ParameterDirection.Input);
 
-            var offerCodes = SqlConnection.Query<OfferCode>("OfferCode_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
+            var offerCodes = SqlConnection.Query<OfferCodeExtended>("OfferCode_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
             return offerCodes;
         }
 

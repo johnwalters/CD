@@ -137,7 +137,7 @@ namespace CDLib
 
 
 
-        public List<OfferCode> GetAllOfferCodes(int offerId)
+        public List<OfferCodeExtended> GetAllOfferCodes(int offerId)
         {
             try
             {

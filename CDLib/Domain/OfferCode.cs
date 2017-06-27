@@ -15,6 +15,11 @@ namespace CDLib.Domain
         public string Code { get; set; }
         public string ClaimingUser { get; set; }
         public string ClaimedOn { get; set; }
-
     }
+
+    public class OfferCodeExtended:OfferCode
+        {
+            public string BuyerEmail { get; set; }
+        }
+
 }

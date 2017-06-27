@@ -20,5 +20,11 @@ namespace CDSite.Models
 
         public string SuccessMessage { get; set; }
         public string ErrorMessage { get; set; }
+
+        [Display(Name = "BuyerEmail")]
+        public string BuyerEmail { get; set; }
+
+        [Display(Name ="DateClaimed")]
+        public string DateClaimed { get; set; }
     }
 }
