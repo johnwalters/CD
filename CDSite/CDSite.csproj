@@ -241,6 +241,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="AppSettingsSecrets.config" />
+    <Content Include="ConnectionStrings.config" />
     <None Include="Properties\PublishProfiles\LapCd01 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\LapCd01 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
