@@ -26,4 +26,20 @@ textarea {
     background-color: #1F0E2D !important;
     color: #000000;
 }
+.btn-success {
+    background-color: #409E59;
+    border-color: #058E8A;
+}
+    .btn-success:hover {
+        background-color: #63B566;
+    }
+.btn-danger{
+    background-color: firebrick;
+}
+div ul.nav.navbar-nav li a{
+    color:aliceblue;
+}
+a.navbar-brand{
+    color: aliceblue !important;
+}
 

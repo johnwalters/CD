@@ -37,6 +37,8 @@ namespace CDSite.Controllers
                 offerCodeViewModel.Code = item.Code;
                 offerCodeViewModel.OfferId = item.OfferId;
                 offerCodeViewModel.Id = item.Id;
+                offerCodeViewModel.BuyerEmail = item.BuyerEmail;
+                offerCodeViewModel.DateClaimed = item.ClaimedOn;
                 model.OfferCodeList.Add(offerCodeViewModel);
             }
             return View(model);

@@ -51,12 +51,16 @@
         <table class="table">
             <tr>
                 <th>Code</th>
+                <th>Buyer Email</th>
+                <th>Date Claimed</th>
             </tr>
                
     @foreach (var offerCode in Model.OfferCodeList)
     {
         <tr>
             <td>@Html.ActionLink(@offerCode.Code, "Edit", new { id = offerCode.Id })</td>
+            <td>@offerCode.BuyerEmail</td>
+            <td>@offerCode.DateClaimed</td>
         </tr>
     }
                 

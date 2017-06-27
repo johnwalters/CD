@@ -6,6 +6,15 @@
 <h2>@ViewBag.Title</h2>
 <div>
     <p>
-        Here is your code: @Model.OfferCode
+        @if (String.IsNullOrEmpty(Model.OfferCode))
+        {
+           <p class="alert alert-warning" role="alert"> Sorry. No codes available for this product :( </p>
+        }
+        else
+        {
+            <h4> Here is your code for @Model.Title:</h4>
+            <h3>@Model.OfferCode</h3>
+            <a class="" href="@Model.Url">Link to product</a>
+        }
     </p>
 </div>
