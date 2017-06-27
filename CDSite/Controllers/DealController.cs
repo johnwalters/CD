@@ -210,20 +210,20 @@ namespace CDSite.Controllers
             var model = new DealRegisterViewModel();
             var offerService = new OfferService();
             Offer offer = offerService.GetOfferByToken(offerToken);
-            model.IsCodeAvailable = isCodeAvailable(offerToken);
+            model.IsCodeAvailable = isCodeAvailable(offer.Id);
             model.Title = offer.Title;
             model.Description = offer.Description;
             model.OfferToken = offerToken;
             return View(model);
         }
-        public bool isCodeAvailable(string offerToken)
+        public bool isCodeAvailable(int offerId)
         {
             var offerService = new OfferService();
-            Offer offer = offerService.GetOfferByToken(offerToken);
+            Offer offer = offerService.GetOffer(offerId);
             //List<OfferCode> offerCodeList = new List<OfferCode>();
             int nullCount = 0;
             var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
-            return offerCodeList.Any(erik => String.IsNullOrEmpty(erik.ClaimingUser));
+            return offerCodeList.Any(oc => String.IsNullOrEmpty(oc.ClaimingUser));
             //foreach (OfferCode item in offerCodeList)
             //{
             //    offerCodeList.Add(item);
@@ -242,14 +242,13 @@ namespace CDSite.Controllers
             //}
         }
 
-        public string CodeForUser(string offerToken, string userId)
+        public string CodeForUser(int offerId, string userId)
         {
             var offerService = new OfferService();
-            Offer offer = offerService.GetOfferByToken(offerToken);
-
-            int nullCount = 0;
+            Offer offer = offerService.GetOffer(offerId);
+            
             var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
-            var offerCode =  offerCodeList.Where(erik => erik.ClaimingUser == userId).FirstOrDefault();
+            var offerCode =  offerCodeList.Where(oc => oc.ClaimingUser == userId).FirstOrDefault();
             if (offerCode != null)
             {
                 return offerCode.Code;
@@ -295,11 +294,11 @@ namespace CDSite.Controllers
                     // TempData["ViewBagLink"] = callbackUrl;
 
 
-                    ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
-                                    + "before you can log in. ";
+                    ViewBag.Message = "Please check your email to receive your code.";
 
+#if DEBUG
                     ViewBag.Message += callbackUrl;
-
+#endif
                     return View("Info");
                     //return RedirectToAction("Index", "Home");
                 }
@@ -322,11 +321,22 @@ namespace CDSite.Controllers
             OfferService offerService = new OfferService();
             var model = new DealRegisterViewModel();
             var offer = offerService.GetOfferByToken(offerToken);
-            var offerCode = offerService.ClaimNextCode(offer.Id, userId);
-            model.OfferCode = offerCode;
-            model.Title = offer.Title;
-            model.Description = offer.Description;
-            model.Url = offer.Url;
+            var existingOfferCode = CodeForUser(offer.Id, userId);
+            if (existingOfferCode == null)//if user does not have code yet, claim next
+            {
+                var offerCode = offerService.ClaimNextCode(offer.Id, userId);
+                model.OfferCode = offerCode;
+                model.Title = offer.Title;
+                model.Description = offer.Description;
+                model.Url = offer.Url;
+            }
+            else//otherwise use the code that user already has
+            {
+                model.OfferCode = existingOfferCode;
+                model.Title = offer.Title;
+                model.Description = offer.Description;
+                model.Url = offer.Url;
+            }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             if (result.Succeeded)
             {
@@ -338,6 +348,7 @@ namespace CDSite.Controllers
             }
         }
 
+     
 
         // GET: /Deal/SendCode
         [AllowAnonymous]
@@ -479,7 +490,7 @@ namespace CDSite.Controllers
             base.Dispose(disposing);
         }
 
-        #region Helpers
+#region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -547,7 +558,7 @@ namespace CDSite.Controllers
 
             return callbackUrl;
         }
-        #endregion
+#endregion
 
 
     }
