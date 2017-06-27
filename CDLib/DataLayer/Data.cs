@@ -7,6 +7,9 @@ using System.Data;
 using System;
 using System.Collections.Generic;
 using CDLib.Domain;
+using System.Reflection;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace CDLib.DataLayer
 {
@@ -244,6 +247,55 @@ namespace CDLib.DataLayer
             return nextCode;
         }
         #endregion
+
+        #region SetUp Methods
+        public void SetupDb(string setUpSqlDirectory)
+        {
+            var sql = @"
+            IF OBJECT_ID('Company', 'U') IS NOT NULL 
+            BEGIN
+	            SELECT 1 as 'IsDbSetup'
+            END
+            ELSE 
+            BEGIN
+	            SELECT 0 as 'IsDbSetup'
+            END
+            ";
+            var isDbSetup = SqlConnection.Query<bool>(sql).FirstOrDefault();
+            if (!isDbSetup)
+            {
+                // execute setup db script
+                var setupSqlPath = Path.Combine(setUpSqlDirectory, "SetupDb.sql");
+                var setupSqlContent = System.IO.File.ReadAllText(setupSqlPath);
+                var migrateSqlPath = Path.Combine(setUpSqlDirectory, "MigrateDb.sql");
+                var migrateSqlContent = System.IO.File.ReadAllText(migrateSqlPath);
+
+                ExecuteSqlCommandScript(setupSqlContent);
+                ExecuteSqlCommandScript(migrateSqlContent);
+            }
+        }
+
+        private void ExecuteSqlCommandScript(string sql)
+        {
+            string sqlBatch = string.Empty;
+
+            //sql += "\nGO";   // make sure last batch is executed.
+            foreach (string line in sql.Split(new string[2] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (line.ToUpperInvariant().Trim() == "GO")
+                {
+                    SqlConnection.Execute(sqlBatch);
+                    sqlBatch = string.Empty;
+                }
+                else
+                {
+                    sqlBatch += line + "\n";
+                }
+            }
+
+        }
+        #endregion
+
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CDLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -26,7 +27,7 @@ namespace CDSite
             {
                 System.IO.File.WriteAllText(connectionStringsPath, ConfigContent.ConnectionStringsContent);
             }
-
+            
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
