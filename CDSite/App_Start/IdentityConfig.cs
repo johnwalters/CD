@@ -24,42 +24,48 @@ namespace CDSite
         {
             await configSendGridasync(message);
         }
-    
 
-    // Use NuGet to install SendGrid (Basic C# client lib) 
-    private async Task configSendGridasync(IdentityMessage message)
-    {
-        var myMessage = new SendGridMessage();
-        myMessage.AddTo(message.Destination);
-        myMessage.From = new System.Net.Mail.MailAddress(
-                            "jwalters@lapizon.com", "John");
-        myMessage.Subject = message.Subject;
-        myMessage.Text = message.Body;
-        myMessage.Html = message.Body;
 
-        var credentials = new NetworkCredential(
-                   ConfigurationManager.AppSettings["mailAccount"],
-                   ConfigurationManager.AppSettings["mailPassword"]
-                   );
-
-        // Create a Web transport for sending email.
-        var transportWeb = new Web(credentials);
-
-        // Send the email.
-        if (transportWeb != null)
+        // Use NuGet to install SendGrid (Basic C# client lib) 
+        private async Task configSendGridasync(IdentityMessage message)
         {
-            await transportWeb.DeliverAsync(myMessage);
-        }
-        else
-        {
-            Trace.TraceError("Failed to create Web transport.");
-            await Task.FromResult(0);
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(message.Destination);
+            myMessage.From = new System.Net.Mail.MailAddress(
+                                "jwalters@lapizon.com", "John");
+            myMessage.Subject = message.Subject;
+            myMessage.Text = message.Body;
+            myMessage.Html = message.Body;
+
+            var mailAccount = ConfigurationManager.AppSettings["mailAccount"];
+            var mailPassword = ConfigurationManager.AppSettings["mailPassword"];
+
+            if(String.IsNullOrWhiteSpace(mailAccount) || String.IsNullOrWhiteSpace(mailPassword))
+            {
+                Trace.TraceError("Mail account and/or password has not been configured.");
+                throw new ApplicationException("Mail account and/or password has not been configured. Modify AppSettingsSecrets.config to contain SendGrid account and password.");
+            }
+
+            var credentials = new NetworkCredential(mailAccount, mailPassword);
+
+            // Create a Web transport for sending email.
+            var transportWeb = new Web(credentials);
+
+            // Send the email.
+            if (transportWeb != null)
+            {
+                await transportWeb.DeliverAsync(myMessage);
+            }
+            else
+            {
+                Trace.TraceError("Failed to create Web transport.");
+                await Task.FromResult(0);
+            }
         }
     }
-}
 
 
-public class SmsService : IIdentityMessageService
+    public class SmsService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
         {
@@ -76,7 +82,7 @@ public class SmsService : IIdentityMessageService
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -117,7 +123,7 @@ public class SmsService : IIdentityMessageService
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;

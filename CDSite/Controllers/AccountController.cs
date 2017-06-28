@@ -218,6 +218,10 @@ namespace CDSite.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
+                // set up database if not done yet
+                new SystemService().SetUpDb(Server.MapPath("~/bin/"));
+
                 if (result.Succeeded)
                 {
                     //Line below commented out to prevent log in until the user is confirmed.
