@@ -34,10 +34,12 @@ namespace CDSite.Controllers
                 offerViewModel.Description = item.Description;
                 offerViewModel.Url = item.Url;
                 offerViewModel.Category = item.Category;
+                offerViewModel.TotalClaimed = item.TotalClaimed;
+                offerViewModel.TotalCodes = item.TotalCodes;
                 model.OfferList.Add(offerViewModel);
                 offerViewModel.Id = item.Id;
             }
-            
+
             return View(model);
         }
         

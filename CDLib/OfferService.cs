@@ -79,7 +79,7 @@ namespace CDLib
             }
         }
 
-        public List<Offer> GetAllOffers(int companyId)
+        public List<OfferExtended> GetAllOffers(int companyId)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace CDLib
         }
 
 
-        public OfferCode GetOfferCode(int id)
+        public OfferCodeExtended GetOfferCode(int id)
         {
             try
             {

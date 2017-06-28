@@ -27,9 +27,9 @@ namespace CDLib.DataLayer
         }
 
 
-        public OfferCode Get(int id)
+        public OfferCodeExtended Get(int offerCodeId)
         {
-            return new Data().GetOfferCode(id);
+            return new Data().GetOfferCode(offerCodeId);
         }
 
         public List<OfferCodeExtended> GetAll(int offerId)

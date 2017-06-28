@@ -149,11 +149,11 @@ namespace CDUnitTests
                 offerService.SaveOffer(testOffer21);
                 offerService.SaveOffer(testOffer22);
 
-                List<Offer> offerList1 = new List<Offer>();
+                List<OfferExtended> offerList1 = new List<OfferExtended>();
                 offerList1 = offerService.GetAllOffers(testCompany1.Id);//41 because id of company1 == 41
                 Assert.IsTrue(offerList1.Count == 1);
                 
-                List<Offer> offerList2 = new List<Offer>();
+                List<OfferExtended> offerList2 = new List<OfferExtended>();
                 offerList2 = offerService.GetAllOffers(testCompany2.Id);
                 Assert.IsTrue(offerList2.Count == 2);
                 

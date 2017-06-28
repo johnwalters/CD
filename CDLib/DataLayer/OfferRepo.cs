@@ -38,7 +38,7 @@ namespace CDLib.DataLayer
             return new Data().GetOffer(token);
         }
 
-        public List<Offer> GetAll(int companyId)
+        public List<OfferExtended> GetAll(int companyId)
         {
             return new Data().GetAllOffers(companyId);
         }

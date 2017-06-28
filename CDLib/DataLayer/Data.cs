@@ -173,12 +173,12 @@ namespace CDLib.DataLayer
             return offer;
         }
 
-        public List<Offer> GetAllOffers(int companyId)
+        public List<OfferExtended> GetAllOffers(int companyId)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@CompanyId", companyId, dbType: DbType.String, direction: ParameterDirection.Input);
 
-            var offers = SqlConnection.Query<Offer>("Offer_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
+            var offers = SqlConnection.Query<OfferExtended>("Offer_GetAll", parameters, commandType: CommandType.StoredProcedure).ToList();
             return offers;
         }
         #endregion
@@ -213,12 +213,12 @@ namespace CDLib.DataLayer
             SqlConnection.Execute("OfferCode_Delete", parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public OfferCode GetOfferCode(int id)
+        public OfferCodeExtended GetOfferCode(int id)
         {
             var parameters = new DynamicParameters();
-            parameters.Add("@Id", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
+            parameters.Add("@OfferCodeId", id, dbType: DbType.Int32, direction: ParameterDirection.Input);
 
-            var offerCode = SqlConnection.Query<OfferCode>("OfferCode_Get", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
+            var offerCode = SqlConnection.Query<OfferCodeExtended>("OfferCode_Get", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
             return offerCode;
         }
         

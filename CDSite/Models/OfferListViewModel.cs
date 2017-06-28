@@ -9,6 +9,7 @@ namespace CDSite.Models
     public class OfferListViewModel
     {
         public List<OfferViewModel> OfferList {get; set;}
+
         [Display(Name = "Title")]
         public string Title { get; set; }
 
@@ -20,6 +21,7 @@ namespace CDSite.Models
 
         [Display(Name = "Category")]
         public string Category { get; set; }
+
 
     }
 }

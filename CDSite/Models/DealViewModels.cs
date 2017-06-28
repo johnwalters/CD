@@ -33,7 +33,7 @@ namespace CDSite.Models
         public string Description { get; set; }
 
         [Display(Name = "Url")]
-        public string Url { get; set; }
+        public string Url { get;set; }
 
         //TODO: Change this to Token
         public string OfferToken { get; set; }

@@ -49,7 +49,8 @@
                     <td>@offer.Description</td>
                     <td>@offer.Url</td>
                     <td>@offer.Category</td>
-                    <td>@Html.ActionLink("See Codes","List" ,"OfferCode", new { offerId = offer.Id }, null)</td>
+                    <td>@Html.ActionLink("View Codes","List" ,"OfferCode", new { offerId = offer.Id }, null) 
+                    (@offer.TotalCodes codes, @offer.TotalClaimed claimed) </td>
                 </tr>
             }
 

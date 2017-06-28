@@ -125,7 +125,7 @@ namespace CDSite.Controllers
                 return View(model);
             }
             var offerService = new OfferService();
-            var offerCode = new OfferCode();
+            var offerCode = new OfferCodeExtended();
             if (model.Id != 0)//not creating a new offerCode, but rather editing
             {
                offerCode = offerService.GetOfferCode(model.Id);
@@ -153,6 +153,8 @@ namespace CDSite.Controllers
             offerCode.Code = model.Code;
             offerCode.OfferId = model.OfferId;
             offerCode.Id = model.Id;
+            offerCode.BuyerEmail = model.BuyerEmail;
+
             offerService.SaveOfferCode(offerCode);
 
             model.SuccessMessage = "Success - Offer Code saved.";
@@ -184,6 +186,8 @@ namespace CDSite.Controllers
             model.Code = offerCode.Code;
             model.OfferId = offerCode.OfferId;
             model.Id = offerCode.Id;
+            model.BuyerEmail = offerCode.BuyerEmail;
+            model.DateClaimed = offerCode.ClaimedOn;
             return View(model);
         }
 

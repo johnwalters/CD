@@ -24,10 +24,17 @@ namespace CDSite.Models
         [Display(Name = "Category")]
         public string Category { get; set; }
 
+        [Display(Name = "Total Codes")]
+        public int TotalCodes { get; set; }
+
+        [Display(Name = "Total Claimed")]
+        public int TotalClaimed { get; set; }
+
         public string SuccessMessage { get; set; }
 
         public string ErrorMessage { get; set; }
     }
 
+    
    
 }

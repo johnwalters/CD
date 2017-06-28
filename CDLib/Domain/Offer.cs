@@ -19,5 +19,11 @@ namespace CDLib.Domain
         public string Token { get; set; }
     }
 
+    public class OfferExtended : Offer
+    {
+        public int TotalCodes;
+        public int TotalClaimed;
+    }
+
 
 }
