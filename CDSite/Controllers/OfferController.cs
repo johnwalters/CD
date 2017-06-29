@@ -147,7 +147,7 @@ namespace CDSite.Controllers
             string codesCsv = service.GetAllOfferCodesCsv(offerId);
             var offer = service.GetOffer(offerId);
             //should offer.Title be model.Title?
-            var fileName = "ClaimedOfferCodes_" + offer.Title + ".csv";
+            var fileName = "ClaimedOfferCodes_" + offer.Title.Replace(" ", "") + ".csv";
             Response.Clear();
             Response.AddHeader("Content-Disposition", string.Format("attachment; filename={0}", fileName));
             Response.ContentType = "text/csv";

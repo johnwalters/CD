@@ -24,7 +24,7 @@ namespace CDSite.Helpers
                         offer.Title.Contains(",") ? String.Format("\"{0}\"", offer.Title) : offer.Title
                         + ",";
                     offerCodeString += 
-                        offer.Category.Contains(",") ? String.Format("\"{0}\"", offer.Category) : offer.Category
+                        (offer.Category.Contains(",") ? String.Format("\"{0}\"", offer.Category) : offer.Category)
                         + ",";
                     offerCodeString += 
                         item.Code.Contains(",") ? String.Format("\"{0}\"", item.Code) : item.Code
