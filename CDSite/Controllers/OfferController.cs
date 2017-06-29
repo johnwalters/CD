@@ -139,5 +139,23 @@ namespace CDSite.Controllers
             service.DeleteOffer(model.Id);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult DownloadCsv(int offerId)
+        {
+            OfferService service = new OfferService();
+            string codesCsv = service.GetAllOfferCodesCsv(offerId);
+            var offer = service.GetOffer(offerId);
+            //should offer.Title be model.Title?
+            var fileName = "ClaimedOfferCodes_" + offer.Title + ".csv";
+            Response.Clear();
+            Response.AddHeader("Content-Disposition", string.Format("attachment; filename={0}", fileName));
+            Response.ContentType = "text/csv";
+            Response.Write(codesCsv);
+            Response.Flush();
+            Response.End();
+
+            return null;
+        }
     }
 }

@@ -7,44 +7,58 @@
     <meta name="viewport" content="width=device-width" />
     <title>List</title>
     <style>
-        .button{
+        .button {
             font-size: x-large;
         }
-        .row{
+
+        .row {
             margin-top: 20px
         }
-        span.link{
+
+        span.link {
             font-size: 24px;
         }
     </style>
 </head>
 <body>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <span class="link">
                 @Html.ActionLink("Back to Offers", "Index", "Offer", null, null)
             </span>
-                </div>
-        <div class="col-sm-5 col-offset-5"></div>
+        </div>
+        <div class="col-sm-2 col-offset-2"></div>
         @*<div class="form-group">*@
 
+        @* Download CSV File Button *@
+        <div class="button">
+            <div class="col-sm2">
+                @Html.ActionLink("Download CSV File", "DownloadCsv", "Offer",
+               new { offerId = Model.OfferId }, new { @class = "btn btn-info" })
+            </div>
+        </div>
+
+        @* Create Code Button *@
         <div class="button">
             <div class="col-sm-2">
-                    @Html.ActionLink("Create Code", "Create", "OfferCode",
+                @Html.ActionLink("Create Code", "Create", "OfferCode",
            new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
-</div>
+            </div>
         </div>
+
+        @* Create Codes in Bulk Button *@
         <div class="button">
             <div class="col-sm-2">
                 <div class="form-group">
-                    
                     @Html.ActionLink("Create Codes in Bulk", "CreateBulk", "OfferCode",
            new { offerId = @Model.OfferId }, new { @class = "btn btn-success" })
                 </div>
             </div>
         </div>
-    </div>
-    <div> 
+   </div>
+
+
+    <div>
         <div>
             <h3>Offer codes for @Model.OfferTitle:</h3>
         </div>
@@ -54,21 +68,21 @@
                 <th>Buyer Email</th>
                 <th>Date Claimed</th>
             </tr>
-               
-    @foreach (var offerCode in Model.OfferCodeList)
-    {
-        <tr>
-            <td>@Html.ActionLink(@offerCode.Code, "Edit", new { id = offerCode.Id })</td>
-            <td>@offerCode.BuyerEmail</td>
-            <td>@offerCode.DateClaimed</td>
-        </tr>
-    }
-                
-            </table>
-</div>
+
+            @foreach (var offerCode in Model.OfferCodeList)
+            {
+                <tr>
+                    <td>@Html.ActionLink(@offerCode.Code, "Edit", new { id = offerCode.Id })</td>
+                    <td>@offerCode.BuyerEmail</td>
+                    <td>@offerCode.DateClaimed</td>
+                </tr>
+            }
+
+        </table>
+    </div>
     @if (!String.IsNullOrEmpty(@Model.ErrorMessage))
     {
-    <div class="alert alert-danger" role="alert"><strong>@Model.ErrorMessage</strong></div>
+        <div class="alert alert-danger" role="alert"><strong>@Model.ErrorMessage</strong></div>
     }
 </body>
 </html>

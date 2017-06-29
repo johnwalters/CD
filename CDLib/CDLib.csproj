@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\CsvHelper.cs" />
     <Compile Include="SystemService.cs" />
     <Compile Include="CompanyService.cs" />
     <Compile Include="DataLayer\CompanyRepo.cs" />

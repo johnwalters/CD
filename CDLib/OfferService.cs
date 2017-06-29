@@ -164,5 +164,18 @@ namespace CDLib
                 throw;
             }
         }
+
+        public string GetAllOfferCodesCsv(int offerId)
+        {
+            try
+            {
+                return new CDSite.Helpers.CsvHelper().GetAllOfferCodesCsv(offerId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error during OfferService.ClaimNextCode", ex);
+                throw;
+            }
+        }
     }
 }
