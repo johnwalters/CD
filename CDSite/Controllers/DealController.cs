@@ -61,145 +61,7 @@ namespace CDSite.Controllers
             }
         }
 
-        //Details
-        //[Authorize]
-        //public ActionResult Details()
-        //{
-        //    ViewBag.Message = "Details page.";
-        //    var model = new DetailsViewModel();
-        //    model.Address1 = company.Address1;
-        //    model.Address2 = company.Address2;
-        //    model.City = company.City;
-        //    model.State = company.State;
-        //    model.PostalCode = company.PostalCode;
-        //    model.PhoneNumber = company.PhoneNumber;
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //[Authorize]
-        //public ActionResult Details(DetailsViewModel model)
-        //{
-        //    ViewBag.Message = "Details page.";
-
-        //    var company = this.UserCompany;
-
-        //    company.Name = model.CompanyName;
-        //    company.Address1 = model.Address1;
-        //    company.Address2 = model.Address2;
-        //    company.City = model.City;
-        //    company.State = model.State;
-        //    company.PostalCode = model.PostalCode;
-        //    company.PhoneNumber = model.PhoneNumber;
-
-        //    var service = new CompanyService();
-        //    service.Save(company);
-        //    model.SuccessMessage = "Success - Profile saved.";
-        //    return RedirectToAction("Index", "Manage");
-        //}
-
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            // Require the user to have a confirmed email before they can log on.
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user != null)
-            {
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
-                {
-                    ViewBag.errorMessage = "You must have a confirmed email to log on.";
-                    return View("Error");
-                }
-            }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-
-                case SignInStatus.Success:
-                    //TODO: if user is seller, redirect to offer/index
-                    if (string.IsNullOrEmpty(returnUrl))
-                    {
-                        if (UserManager.IsInRole(user.Id, "Buyer"))
-                        {
-                            return RedirectToAction("Index", "Offer");
-                        }
-                    }
-
-
-                    return RedirectToLocal(returnUrl);
-
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
-        }
-
-        //
-        // GET: /Deal/VerifyCode
-        [AllowAnonymous]
-        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
-        {
-            // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
-            {
-                return View("Error");
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        //
-        // POST: /Deal/VerifyCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
-            }
-        }
+   
 
         //
         // GET: /Account/Register
@@ -221,7 +83,6 @@ namespace CDSite.Controllers
             var offerService = new OfferService();
             Offer offer = offerService.GetOffer(offerId);
             //List<OfferCode> offerCodeList = new List<OfferCode>();
-            int nullCount = 0;
             var offerCodeList = offerService.GetAllOfferCodes(offer.Id);
             return offerCodeList.Any(oc => String.IsNullOrEmpty(oc.ClaimingUser));
             //foreach (OfferCode item in offerCodeList)
@@ -308,6 +169,71 @@ namespace CDSite.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        
+        [AllowAnonymous]
+        public async Task<ActionResult> RegisterJson(DealRegisterViewModel model)
+        {
+            var registerResult = new DealRegisterResult();
+            if (ModelState.IsValid)
+            {
+                //password = kf6Ua?a<2DhfZ<,t
+                var offerService = new OfferService();
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                var result = await UserManager.CreateAsync(user, "kf6Ua?a<2DhfZ<,t");
+                if (result.Succeeded)
+                {
+                    //Line below commented out to prevent log in until the user is confirmed.
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+
+                    //Create company with user ID
+
+
+                    //Add user role of buyer
+                    await UserManager.AddToRoleAsync(user.Id, "Buyer");
+
+
+                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account", model.OfferToken);
+                    registerResult.IsSuccessful = true;
+                    registerResult.SuccessMessage = "Please check your email to receive your code.";
+
+#if DEBUG
+                    registerResult.SuccessMessage += callbackUrl;
+#endif
+                    // Uncomment to debug locally 
+                    // TempData["ViewBagLink"] = callbackUrl;
+
+                    var jsonResult = Json(registerResult);
+                    jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return jsonResult;
+                    //return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    AddErrors(result, registerResult);
+                    registerResult.IsSuccessful = false;
+                    var jsonResult = Json(registerResult);
+                    jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    
+                    return jsonResult;
+                }
+            }
+            foreach (var value in ModelState.Values)
+            {
+                foreach (var error in value.Errors)
+                {
+                        registerResult.ErrorMessages.Add(error.ErrorMessage);
+                }
+            }
+            var errorResult = Json(registerResult);
+            errorResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            return errorResult;
+        }
 
         //
         // GET: /Account/ConfirmEmail
@@ -347,150 +273,97 @@ namespace CDSite.Controllers
                 return View("Error");
             }
         }
-
-     
-
-        // GET: /Deal/SendCode
+        
+        
         [AllowAnonymous]
-        public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
+        public async Task<ActionResult> ConfirmEmailJson(string userId, string offerToken, string code)
         {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
+            var confirmEmailResult = new DealConfirmEmailResult();
+            if (userId == null || offerToken == null)
             {
-                return View("Error");
-            }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        //
-        // POST: /Deal/SendCode
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> SendCode(SendCodeViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
-            {
-                return View("Error");
-            }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
-        }
-
-        //
-        // GET: /Deal/ExternalLoginCallback
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-            {
-                return RedirectToAction("Login");
-            }
-
-            // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
-                default:
-                    // If the user does not have an account, then prompt the user to create an account
-                    ViewBag.ReturnUrl = returnUrl;
-                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            }
-        }
-
-        //
-        // POST: /Deal/ExternalLoginConfirmation
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                var errors = Json(confirmEmailResult);
+                if (userId == null)
                 {
-                    return View("ExternalLoginFailure");
+                    confirmEmailResult.IsSuccessful = false;
+                    confirmEmailResult.ErrorMessages.Add("userId invalid");
+                    errors = Json(confirmEmailResult);
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
+                if (offerToken == null)
+                {
+                    confirmEmailResult.IsSuccessful = false;
+                    confirmEmailResult.ErrorMessages.Add("offerToken invalid");
+                    errors = Json(confirmEmailResult);
+                }
+                errors.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                return errors;
+            }
+            OfferService offerService = new OfferService();
+            var model = new DealRegisterViewModel();
+            var offer = offerService.GetOfferByToken(offerToken);
+            //TODO: If offer is null we need to return unsuccessful Message: "Offer not found"
+            var existingOfferCode = CodeForUser(offer.Id, userId);
+            if (existingOfferCode == null)//if user does not have code yet, claim next
+            {
+                var offerCode = offerService.ClaimNextCode(offer.Id, userId);
+                model.OfferCode = offerCode;
+                model.Title = offer.Title;
+                model.Description = offer.Description;
+                model.Url = offer.Url;
+            }
+            else//otherwise use the code that user already has
+            {
+                model.OfferCode = existingOfferCode;
+                model.Title = offer.Title;
+                model.Description = offer.Description;
+                model.Url = offer.Url;
+            }
+            //TODO: Handle if userId is bad.
+            try
+            {
+                var result = await UserManager.ConfirmEmailAsync(userId, code);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
-                    }
+                    confirmEmailResult.IsSuccessful = true;
+                    confirmEmailResult.Code = model.OfferCode;
+                    confirmEmailResult.Description = model.Description;
+                    confirmEmailResult.Url = model.Url;
+                    var success = Json(confirmEmailResult);
+                    success.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return success;
                 }
-                AddErrors(result);
+                else
+                {
+                    confirmEmailResult.IsSuccessful = false;
+                    confirmEmailResult.Code = null;
+                    //TODO: change error message assignment to foreach
+                    confirmEmailResult.ErrorMessages[0] = "Unhandled error occurred.";
+                    var errors = Json(confirmEmailResult);
+                    errors.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return errors;
+                }
             }
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
-
-        //
-        // POST: /Deal/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
-        }
-
-        //
-        // GET: /Deal/ExternalLoginFailure
-        [AllowAnonymous]
-        public ActionResult ExternalLoginFailure()
-        {
-            return View();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            catch(System.InvalidOperationException ex)
             {
-                if (_userManager != null)
-                {
-                    _userManager.Dispose();
-                    _userManager = null;
-                }
-
-                if (_signInManager != null)
-                {
-                    _signInManager.Dispose();
-                    _signInManager = null;
-                }
+                confirmEmailResult.IsSuccessful = false;
+                confirmEmailResult.ErrorMessages.Add(ex.Message);
+                var errors = Json(confirmEmailResult);
+                errors.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                return errors;
+            }
+            catch (Exception ex)
+            {
+                confirmEmailResult.IsSuccessful = false;
+                confirmEmailResult.ErrorMessages.Add("Unknown Error");
+                var errors = Json(confirmEmailResult);
+                errors.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                return errors;
             }
 
-            base.Dispose(disposing);
         }
 
-#region Helpers
+
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -507,6 +380,14 @@ namespace CDSite.Controllers
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error);
+            }
+        }
+
+        private void AddErrors(IdentityResult identityResult, DealRegisterResult dealRegisterResult)
+        {
+            foreach (var error in identityResult.Errors)
+            {
+                dealRegisterResult.ErrorMessages.Add(error);
             }
         }
 
@@ -560,6 +441,29 @@ namespace CDSite.Controllers
         }
 #endregion
 
+
+        public class DealRegisterResult
+        {
+            public bool IsSuccessful { get; set; }
+            public string SuccessMessage { get; set; }
+            public List<string> ErrorMessages { get; set; }
+
+            public DealRegisterResult()
+            {
+                ErrorMessages = new List<string>();
+            }
+            
+        }
+
+        public class DealConfirmEmailResult
+        {
+            public bool IsSuccessful { get; set; }
+            public string Code { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Url { get; set; }
+            public List<string> ErrorMessages = new List<string>();
+        }
 
     }
 
