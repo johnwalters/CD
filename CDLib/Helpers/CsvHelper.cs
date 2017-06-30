@@ -13,7 +13,8 @@ namespace CDSite.Helpers
             var offerService = new OfferService();
             var offer = offerService.GetOffer(offerId);
             var offerCodeList = offerService.GetAllOfferCodes(offerId);
-            offerCodeList = offerCodeList.Where(oc => oc.ClaimedOn != null).ToList();
+            offerCodeList = offerCodeList.Where(oc => !String.IsNullOrEmpty(oc.BuyerEmail)).ToList();
+
             string offerCodeString = "Offer Title,Category,Code,Buyer,Date\n";
             foreach (var item in offerCodeList)
             {

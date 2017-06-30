@@ -33,11 +33,16 @@
         @* Download CSV File Button *@
         <div class="button">
             <div class="col-md-2">
-                @Html.ActionLink("Download CSV File", "DownloadCsv", "Offer",
-               new { offerId = Model.OfferId }, new { @class = "btn btn-info" })
+
+              @Html.ActionLink(" Download CSV File",
+             "DownloadCsv",
+             "Offer",
+             new { offerId = Model.OfferId },
+             new { @class = "btn btn-info glyphicon glyphicon-download",
+             id="downloadLink"
+             })
             </div>
         </div>
-
         @* Create Code Button *@
         <div class="button">
             <div class="col-md-2" id="createButton">
