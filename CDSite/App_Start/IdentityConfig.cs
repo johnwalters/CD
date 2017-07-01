@@ -22,12 +22,12 @@ namespace CDSite
     {
         public async Task SendAsync(IdentityMessage message)
         {
-            await configSendGridasync(message);
+            await ConfigSendGridasync(message);
         }
 
 
         // Use NuGet to install SendGrid (Basic C# client lib) 
-        private async Task configSendGridasync(IdentityMessage message)
+        private async Task ConfigSendGridasync(IdentityMessage message)
         {
             var myMessage = new SendGridMessage();
             myMessage.AddTo(message.Destination);
@@ -40,10 +40,17 @@ namespace CDSite
             var mailAccount = ConfigurationManager.AppSettings["mailAccount"];
             var mailPassword = ConfigurationManager.AppSettings["mailPassword"];
 
-            if(String.IsNullOrWhiteSpace(mailAccount) || String.IsNullOrWhiteSpace(mailPassword))
+            var isMailServiceConfigured = !String.IsNullOrWhiteSpace(mailAccount) && !String.IsNullOrWhiteSpace(mailPassword);
+            if (!isMailServiceConfigured)
             {
+#if DEBUG
+                Trace.TraceWarning("Mail Service not configured. Modify AppSettingsSecrets.config to contain SendGrid account and password. Bypassing email functionality");
+                return;
+#else
                 Trace.TraceError("Mail account and/or password has not been configured.");
                 throw new ApplicationException("Mail account and/or password has not been configured. Modify AppSettingsSecrets.config to contain SendGrid account and password.");
+#endif
+
             }
 
             var credentials = new NetworkCredential(mailAccount, mailPassword);
