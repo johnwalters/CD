@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using CDSite.Models;
 using CDLib;
 using CDLib.Domain;
+using System.Configuration;
 
 namespace CDSite.Controllers
 {
@@ -243,13 +244,17 @@ namespace CDSite.Controllers
 
                     string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
 
-                    // Uncomment to debug locally 
-                    // TempData["ViewBagLink"] = callbackUrl;
-
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
                                     + "before you can log in.";
 
+#if DEBUG
+                    if (!IsMailServiceConfigured())
+                    {
+                        ViewBag.Message += "** Mail Service not yet configured (see AppSettingsSecrets.config)\n";
+                        ViewBag.Message += "Link to email confirm: \n" + callbackUrl;
+                    }
+#endif
                     return View("Info");
                     //return RedirectToAction("Index", "Home");
                 }
@@ -580,6 +585,14 @@ namespace CDSite.Controllers
                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;
+        }
+
+        private bool IsMailServiceConfigured()
+        {
+            var mailAccount = ConfigurationManager.AppSettings["mailAccount"];
+            var mailPassword = ConfigurationManager.AppSettings["mailPassword"];
+
+            return !(String.IsNullOrWhiteSpace(mailAccount) || String.IsNullOrWhiteSpace(mailPassword));
         }
         #endregion
 
