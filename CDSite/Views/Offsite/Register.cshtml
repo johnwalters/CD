@@ -1,0 +1,31 @@
+﻿@model CDSite.Models.OffsiteRegisterViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/app/register.js"></script>
+    
+</head>
+<body>
+    
+    <div> 
+        @Html.TextBox("EmailSubmit")
+        <button id="submitEmail">
+            Submit Email
+        </button>
+     
+    </div>
+    <div id="Message">
+
+    </div>
+        @Html.HiddenFor(m => m.OfferToken)
+</body>
+</html>

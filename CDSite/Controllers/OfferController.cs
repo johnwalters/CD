@@ -125,6 +125,7 @@ namespace CDSite.Controllers
             {
                 model.Title = offer.Title;
                 model.Description = offer.Description;
+                model.Token = offer.Token;
                 model.Url = offer.Url;
                 model.Category = offer.Category;
             }

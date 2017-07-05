@@ -24,6 +24,10 @@ namespace CDSite.Models
         [Display(Name = "Category")]
         public string Category { get; set; }
 
+        //May not be right
+        [Display (Name = "Token")]
+        public string Token { get; set; }
+
         [Display(Name = "Total Codes")]
         public int TotalCodes { get; set; }
 
